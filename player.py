@@ -1,4 +1,4 @@
-import random
+from random import randrange
 from board import *
 
 class Player():
@@ -9,7 +9,7 @@ class Player():
 		self.color = color
 		self.money = 0
 		self.properties = []
-		self.numProperties = []
+		self.numProperties = 0
 
 	def pay(self, amount):
 		self.money = self.money + amount
@@ -48,10 +48,14 @@ class Player():
 		else:
 			self.currPos = (num - (NUM_SPACES - self.currPos))
 
-	def takeTurn(self):
-		roll = self.roll()
-		self.move(roll[0] + roll[1])
+	# def takeTurn(self):
+	# 	roll = self.roll()
+	# 	self.move(roll[0] + roll[1])
 
-
-		
-
+	def __str__(self):
+		return """Player Object: 
+		Number: {}
+		Postition: {}
+		Color: {}
+		Money: {}
+		Num Prop: {}""".format(self.playerNumber, self.currPos, self.color, self.money, self.numProperties)
