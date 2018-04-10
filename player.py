@@ -1,15 +1,15 @@
 import random
-from board import Board, Property
+from board import *
 
 class Player():
 
-	def __init__(self):
-		self.playerNumber = None
+	def __init__(self, playerNumber, currPos, color):
+		self.playerNumber = playerNumber
+		self.currPos = currPos
+		self.color = color
 		self.money = 0
 		self.properties = []
 		self.numProperties = []
-		self.currPos = None
-		self.color = None
 
 	def pay(self, amount):
 		self.money = self.money + amount
@@ -22,25 +22,25 @@ class Player():
 
 	def addProperty(self, property):
 		""" USAGE: Property Object """
-		if property is not Property:
+		if prop is not Property:
 			print("Could not add property to player in addProperty. Argument not of type Property")
 
-		self.properties.append(property)
+		self.properties.append(prop)
 
 	def takeProperty(self, property):
-		if property is not Property:
+		if prop is not Property:
 			print("Could not remove property to player in takeProperty. Argument not of type Property")
 
-		self.properties.remove(property)
+		self.properties.remove(prop)
 
 	def roll(self):
 		return [randrange(1, 6), randrange(1, 6)]
 
 	def setLocation(self, property):
-		if property is not Property:
+		if prop is not Property:
 			print("Could not set current location on board in setLocation. Argument not of type Property")
 
-		self.currPos = property
+		self.currPos = prop
 
 	def move(self, num):
 		if self.currPos + num <= NUM_SPACES:
