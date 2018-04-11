@@ -3,19 +3,21 @@ from board import *
 
 class Player():
 
-	def __init__(self, playerNumber, currPos, color):
+	def __init__(self, playerNumber, currPos, currPlace, color):
 		self.playerNumber = playerNumber
 		self.currPos = currPos
+		self.currPlace = currPlace
 		self.color = color
-		self.money = 0
+		self.money = 500
 		self.properties = []
 		self.numProperties = 0
+		self.doublCount = 0
 
 	def pay(self, amount):
 		self.money = self.money + amount
 
 	def charge(self, amount):
-		if self.mone - amount < 0:
+		if self.money - amount < 0:
 			raise(Exception("Player" + self.playerNumber +" has no more money."))
 			
 		self.money = self.money - amount
@@ -52,10 +54,21 @@ class Player():
 	# 	roll = self.roll()
 	# 	self.move(roll[0] + roll[1])
 
+	def dispStr(self):
+		st1 = """Position: {}\nMoney: {}\nProperties Owned: {}
+		""".format(self.currPlace.name, self.money, self.numProperties)
+		st2 = ""
+		for prop in self.properties:
+			st2 = st2 + prop.getInfo()
+
+		st2 = st2 + "\n\n"
+
+		return [st1, st2]
+
 	def __str__(self):
 		return """Player Object: 
 		Number: {}
 		Postition: {}
 		Color: {}
 		Money: {}
-		Num Prop: {}""".format(self.playerNumber, self.currPos, self.color, self.money, self.numProperties)
+		Num Prop: {}\n""".format(self.playerNumber, self.currPos, self.color, self.money, self.numProperties)

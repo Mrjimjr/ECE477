@@ -21,26 +21,34 @@ class Property():
 		self.upText = upText
 		
 		if action == "0":
-                        self.action = PROPERTY_SPACE
-                        self.owner = ""
-                elif action == "1":
-                        self.action = CHANCE_SPACE
-                        self.owner = GAME_OWNED_PROPERTY
-                elif action == "2":
-                        self.action = BANK_SPACE
-                        self.owner = GAME_OWNED_PROPERTY
-                elif action == "3":
-                        self.action = RAILROAD_SPACE
-                        self.owner = ""
-                else:
-                        self.action = NOOP_SPACE
-                        self.owner = GAME_OWNED_PROPERTY
+			self.action = PROPERTY_SPACE
+			self.owner = None
+		elif action == "1":
+			self.action = CHANCE_SPACE
+			self.owner = GAME_OWNED_PROPERTY
+		elif action == "2":
+			self.action = BANK_SPACE
+			self.owner = GAME_OWNED_PROPERTY
+		elif action == "3":
+			self.action = RAILROAD_SPACE
+			self.owner = None
+		else:
+			self.action = NOOP_SPACE
+			self.owner = GAME_OWNED_PROPERTY
 
 	def setOwner(self, owner):
 		if owner is Player:
 			self.owner = owner
 		else:
 			print("Could not add owner to property in setOwner. Argument not of type Player")
+
+	def getInfo(self):
+		return """Name: {}\nPrice{}\nRent:{}""".format(self.name, self.price, self.rent)
+
+	def __str__(self):
+		return """Name: {}\nPrice: {}\nRent: {}\nOwner: {}\nAction: {}
+		""".format(self.name, self.price, self.rent, self.owner, self.action)
+
 		
 
 class Board():
@@ -57,7 +65,10 @@ class Board():
                         position = line[0]
 			name = line[1]
 			action = line[2]
-			price = line[3]
+			try:
+				price = int(line[3])
+			except:
+				price = None
 			rent = line[4]
 			upRent = line[5]
 			upCost = line[6]
