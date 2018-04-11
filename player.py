@@ -39,12 +39,13 @@ class Player():
 		return [randrange(1, 6), randrange(1, 6)]
 
 	def setLocation(self, property):
-		if prop is not Property:
+		if property is not Property:
 			print("Could not set current location on board in setLocation. Argument not of type Property")
-
-		self.currPos = prop
+			
+                self.move(int(property.position))
 
 	def move(self, num):
+                print(self.currPos)
 		if self.currPos + num <= NUM_SPACES:
 			self.currPos = self.currPos + num
 		else:

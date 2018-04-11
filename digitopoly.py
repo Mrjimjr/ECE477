@@ -147,10 +147,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		i = random.randint(0,5)
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
-		#player.setLocation(self.board.properties[int(card.location)])
+		player.setLocation(self.board.properties[int(card.location)])
 		#print(player.currPosition)
 	def communityChestHandle(self, player):
-		pass
+		i = random.randint(0,5)
+		card = self.board.communityChestCards[i]
+		player.pay(int(card.amount))
+		
 
 	def bankHandle(self, player):
 		pass
