@@ -15,12 +15,13 @@ class Property():
 	def __init__(self,position,name,action,price,rent,upRent,upCost,text,upText):
 		self.position = position
 		self.name = name
-		self.price = price
-		self.rent = rent
-		self.upRent = upRent
+		self.price = int(price)
+		self.rent = int(rent)
+		self.upRent = int(upRent)
 		self.upCost = upCost
 		self.text = text
 		self.upText = upText
+		self.image = "images/test.png"
 		
 		if action == "0":
 			self.action = PROPERTY_SPACE
