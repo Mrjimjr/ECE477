@@ -261,22 +261,38 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 
 	def chanceHandle(self, player):
-		i = random.randint(0,5)
+		i = random.randint(0,len(self.board.chanceCards)-1)
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
 		player.setLocation(self.board.properties[int(card.location)])
 		#print(player.currPosition)
 	def communityChestHandle(self, player):
-		i = random.randint(0,5)
+		i = random.randint(0,len(self.board.communityChestCards)-1)
 		card = self.board.communityChestCards[i]
 		player.pay(int(card.amount))
 		
 
 	def bankHandle(self, player):
-		pass
+		property = self.board.properties[player.currPos]
+		player.pay(property.price)
+
 
 	def railroadHandle(self, player):
-		pass
+            currentPlace = self.board.properties[player.currPos]
+            if currentPlace.owner == None:
+                    print "Price: {}, Money:{}".format(currentPlace.price, player.money)
+                    if currentPlace.price <= player.money:
+                            self.button_playerAction.setText("Buy!")	
+                            reconnect(self.button_playerAction.clicked, (lambda: self.buyProperty(player, currentPlace)))
+                            self.button_nextPlayer.setEnabled(True)
+                            self.button_nextPlayer.setText("Pass")
+                            reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+                    else:
+                            print "Player doesnt have enough money"
+                            self.button_playerAction.setEnabled(False)
+            else:
+                owner = currPlace.owner
+                print(owner)
 
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles

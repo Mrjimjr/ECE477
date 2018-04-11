@@ -3,7 +3,7 @@ Location,Text on Tile,Action,Price,Rent,Rent with Upgrade,Upgrade Cost,Price Tex
 1,Discount Den,0,60,2,10,50,Player spends {} at the den.,"Den Pops are cheap, invest {} to renovate the kitchen adding Mary Lou Donuts. Player will now spend {}",Bank: 2
 2,Community Chest,5,0,0,0,0,0,0,RailRoad: 3
 3,The Purdue Shop,0,60,2,20,50,Player spends {} at the Purdue Shop.,"Buisness is slow, invest {} to create a custom edition shirt. Players will now spend {}",No-op: 4
-4,School Supplies (Pay $200),2,200,0,0,0,0,0,
+4,School Supplies Pay $200,2,-200,0,0,0,0,0,
 5,Silver Loop,3,200,0,0,0,0,0,
 6,Au Bon Pain,0,100,6,30,50,Player spends {} at Au Bon Pain,,
 7,Chance,1,0,0,0,0,0,0,
@@ -11,7 +11,7 @@ Location,Text on Tile,Action,Price,Rent,Rent with Upgrade,Upgrade Cost,Price Tex
 9,MSEE Beans,0,120,8,40,50,Player spends {} at Beans,"Coffee doesn't keep enough buisness, invest {} to add Panda Express during lunch. Players will now spend {}",
 10,In Open Lab/Just Visiting,4,0,0,0,0,0,0,
 11,Two Fellas,0,140,10,50,100,Player spends {} at Two Fellas,,
-12,Yearly Coffee Expense,2,150,0,0,0,0,0,
+12,Coffee Expenses Pay $150,2,-150,0,0,0,0,0,
 13,Famous Franks,0,140,10,50,100,Player spends {} at Famous Franks,,
 14,Mad Mushroom,0,160,12,60,100,Player spends {} at Mad Mush,,
 15,Gold Loop,3,200,0,0,0,0,0,
@@ -19,7 +19,7 @@ Location,Text on Tile,Action,Price,Rent,Rent with Upgrade,Upgrade Cost,Price Tex
 17,Community Chest,5,0,0,0,0,0,0,
 18,Scotty's Brewhouse,0,180,14,70,100,Player spends {} at Scotty's ,,
 19,Jimmy Johns,0,200,16,80,100,Player spends {} at Jimmy Johns,,
-20,"A Parking (Mon - Fri, 9am - 5pm)",4,0,0,0,0,0,0,
+20,"A Parking Mon - Fri, 9am – 5pm",4,0,0,0,0,0,0,
 21,Brothers Bar and Grill,0,220,18,90,150,Player spends {} at Brothers,"Thursday nights start slow, invest {} in buying T-shirts and giving them out for free. Players will now spend {}",
 22,Chance,1,0,0,0,0,0,0,
 23,Neon Cactus,0,220,18,90,150,Player spends {} at Neon Cactus,"Thursday nights are going so well, invest {} on another employee and collect a cover charge. Players will now spend {}",
@@ -27,7 +27,7 @@ Location,Text on Tile,Action,Price,Rent,Rent with Upgrade,Upgrade Cost,Price Tex
 25,Outer Loop,3,200,0,0,0,0,0,
 26,Elliot Hall,0,260,22,110,150,Player spends {} for Convos ticket,"Convos isn't profiting, invest {} to bring in more popular artisists. Players will now spend {}",
 27,Ross-Aide Stadium,0,260,22,110,150,Player spends {} at Ross-Aide,"Football is not doing great, invest {} and make students buy Football Tickets with thier Basketball Tickets. Players will now spend {}",
-28,Groceries,2,150,0,0,0,0,0,
+28,Buy Groceries Pay $150,2,-150,0,0,0,0,0,
 29,Macky Arena,0,280,24,120,150,Player spends {} at Macky Arena,"Basketball is not doing great, invest {} in a new coach. Players will now spend {}",
 30,Go To Open Lab,4,0,0,0,0,0,0,
 31,Grant Street Station,0,300,26,130,200,Player spends {} at Grant Street,,
@@ -37,5 +37,5 @@ Location,Text on Tile,Action,Price,Rent,Rent with Upgrade,Upgrade Cost,Price Tex
 35,Black Loop,3,200,0,0,0,0,0,
 36,Chance,1,0,0,0,0,0,0,
 37,Follets Purdue West Bookstore,0,350,35,175,200,Player spends {} at Follets ,Invest {} to buy this years books. Professor creates thier own textbook and states it is required. Player now spends {},
-38,Chegg Account,2,100,0,0,0,0,0,
+38,Pay for Chegg Account,2,-100,0,0,0,0,0,
 39,University Book Store,0,400,50,200,200,Player spends {} at University Bookstore,Invest {} to buy this years books. This years version is exactly the same with different page numbers. Professor requires students to have this years version.  Player now spends {},
