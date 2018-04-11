@@ -266,13 +266,14 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)			
 
 	def buyProperty(self, player, currentPlace):
-		print "Player {} buying {}".format(str(player.playerNumber), str(currPlace.name))
+		print "Player {} buying {}".format(str(player.playerNumber), str(currentPlace.name))
 		currentPlace.owner = player
 		player.properties.append(currentPlace)
 		player.numProperties = player.numProperties + 1
 		player.charge(currentPlace.price)
 
 		# Update UI
+		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)		
