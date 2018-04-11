@@ -16,6 +16,22 @@ class DetailView(QMainWindow, Ui_detailView):
 	def __init__(self, property, player, parent=None):
 		super(DetailView, self).__init__(parent)
 
+		self.setAttribute(Qt.WA_TranslucentBackground, True)
+
+		# canvas = QPixmap(self.rect())
+
+		# canvas.fill(Qt.transparent) # fill transparent (makes alpha channel available)
+
+		# p = QPainter((canvas))
+		# p.setOpacity(0.3)
+		# p.setBrush(QBrush(Qt.white)) # use the color you like
+		# p.setPen(QPen(Qt.transparen))
+
+		# p.drawRect(Qrect()) # draws the canvas with desired opacity
+
+		# p.start(self)      # now draw on the window itself
+		# p.drawPixmap(self.rect(), canvas)
+
 		# Vars
 		self.property = property
 		self.player = player
