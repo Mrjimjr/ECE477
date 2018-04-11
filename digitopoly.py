@@ -266,6 +266,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)			
 
 	def buyProperty(self, player, currentPlace):
+		print "Player {} buying {}".format(str(player.playerNumber), str(currPlace.name))
 		currentPlace.owner = player
 		player.properties.append(currentPlace)
 		player.numProperties = player.numProperties + 1
