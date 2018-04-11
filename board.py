@@ -36,8 +36,8 @@ class Property():
 			self.action = RAILROAD_SPACE
 			self.owner = None
 		elif action == "5":
-                        self.action = COMMUNITY_CHEST_SPACE
-                        self.owner = GAME_OWNED_PROPERTY
+			self.action = COMMUNITY_CHEST_SPACE
+			self.owner = GAME_OWNED_PROPERTY
 		else:
 			self.action = NOOP_SPACE
 			self.owner = GAME_OWNED_PROPERTY

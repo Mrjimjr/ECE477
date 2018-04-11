@@ -34,7 +34,24 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.button_closeDetail.setEnabled(True)
 
 	def displayDetail(self):
-		pass
+		prop = self.property
+		self.propIcon.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
+		self.label_propName.setText(str(prop.name))
+		print prop.name
+		self.label_propCost.setText("Property Cost:${}.00".format(prop.price))
+		print prop.price
+		self.label_propText.setText(prop.text)
+		print prop.text
+		self.label_propRent.setText("Rental Cost: ${}.00".format(prop.rent))
+		print prop.rent
+		self.label_propUpCost.setText("Upgrade Cost: ${}.00".format(prop.upCost))
+		print prop.upCost
+		self.label_propUpRent.setText("Upgraded Rental Cost: ${}.00".format(prop.upRent))
+		print prop.upRent
+		self.label_propUpText.setText(str(prop.upText))
+		print prop.upText
+		self.label_propOwner.setText("Owner: Player {}".format(prop.owner.playerNumber))
+		print prop.owner
 
 class PropertyViewer(QMainWindow, Ui_propertyView):
 	"""This is the Property Viewer Object"""
@@ -69,37 +86,33 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 		props = player.properties
 
 		for btn in self.propButtons:
-			btn.setVisible(True)
 			btn.setEnabled(False)
+			btn.setText("")
 
 		for btn in self.rrButtons:
-			btn.setVisible(True)
 			btn.setEnabled(False)
+			btn.setText("")
 
 		btnCnt = 0
 		rrCnt = 0
 		for prop in props:
 			if prop.action == RAILROAD_SPACE:
-				btnCnt = btnCnt + 1
+				btn = self.rrButtons[rrCnt]
+				
+				btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
+				btn.setText(prop.name)
+				btn.setEnabled(True)
+				reconnect(btn.clicked, (lambda: self.propDetailOpen(prop, player)))
+				rrCnt = rrCnt + 1
+			else:
 				btn = self.propButtons[btnCnt]
 				
-				icon = QPixmap(prop.image);
-				btn.setIcon(QIcon(icon))
+				btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
 				btn.setText(prop.name)
 				btn.setEnabled(True)
-				btn.setVisible(True)
 				reconnect(btn.clicked, (lambda: self.propDetailOpen(prop, player)))
-			else:
-				print "RAILROAD"
-				rrCnt = rrCnt + 1
-				btn = self.rrButtons[rrCnt]
+				btnCnt = btnCnt + 1
 
-				icon = QPixmap(prop.image);
-				btn.setIcon(QIcon(icon))
-				btn.setText(prop.name)
-				btn.setEnabled(True)
-				btn.setVisible(True)
-				reconnect(btn.clicked, (lambda: self.propDetailOpen(prop, player)))
 
 	def propDetailOpen(self, prop, player):
 		self.detail_window = DetailView(prop, self)
