@@ -92,6 +92,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.propertyHandle(player)
 		elif player.currPlace.action == CHANCE_SPACE:
 			self.chanceHandle(player)
+		elif player.currPlace.action == COMMUNITY_CHEST_SPACE:
+			self.communityChestHandle(player)
 		elif player.currPlace.action == BANK_SPACE:
 			self.bankHandle(player)
 		elif player.currPlace.action == RAILROAD_SPACE:
@@ -146,6 +148,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 
 	def chanceHandle(self, player):
+		pass
+	def communityChestHandle(self, player):
 		pass
 
 	def bankHandle(self, player):

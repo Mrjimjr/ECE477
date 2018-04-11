@@ -7,16 +7,17 @@ CHANCE_SPACE = 1
 BANK_SPACE = 2
 RAILROAD_SPACE = 3
 NOOP_SPACE = 4
+COMMUNITY_CHEST_SPACE = 5
 
 class Property():
 	"""Represents one property"""
 	def __init__(self,position,name,action,price,rent,upRent,upCost,text,upText):
 		self.position = position
 		self.name = name
-		self.price = int(price)
-		self.rent = int(rent)
-		self.upRent = int(upRent)
-		self.upCost = int(upCost)
+		self.price = price
+		self.rent = rent
+		self.upRent = upRent
+		self.upCost = upCost
 		self.text = text
 		self.upText = upText
 		
@@ -32,6 +33,9 @@ class Property():
 		elif action == "3":
 			self.action = RAILROAD_SPACE
 			self.owner = None
+		elif action == "5":
+                        self.action = COMMUNITY_CHEST_SPACE
+                        self.owner = GAME_OWNED_SPACE
 		else:
 			self.action = NOOP_SPACE
 			self.owner = GAME_OWNED_PROPERTY
@@ -76,6 +80,14 @@ class Board():
 			text = line[7]
 			upText = line[8]
 			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,text,upText))
+		with open("Cards - ChanceTest.csv","r") as myFile:
+                        lines = myFile.readlines()
+                for line in lines[1:]:
+                        line = line.split(",")
+                        position = line[0]
+			name = line[1]
+			action = line[2]
+
 
 class ChanceCards():
         def __init__(self, text, amount):
