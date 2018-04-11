@@ -283,6 +283,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setEnabled(True)
+		self.button_nextPlayer.setText("Next Player")
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)		
 
 	def chanceHandle(self, player):
@@ -312,8 +313,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
-		self.button_playerAction.setEnabled(True)
-		self.updatePlayerUI()
+		self.button_nextPlayer.setEnabled(True)
 
 
 	def railroadHandle(self, player):
