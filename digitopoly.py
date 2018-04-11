@@ -2,6 +2,7 @@ import sys
 
 from PySide.QtGui import *
 from PySide.QtCore import *
+import random
 
 from ui_window import Ui_MainWindow
 from ui_propertyView import Ui_propertyView
@@ -206,6 +207,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.propertyHandle(player)
 		elif player.currPlace.action == CHANCE_SPACE:
 			self.chanceHandle(player)
+		elif player.currPlace.action == COMMUNITY_CHEST_SPACE:
+			self.communityChestHandle(player)
 		elif player.currPlace.action == BANK_SPACE:
 			self.bankHandle(player)
 		elif player.currPlace.action == RAILROAD_SPACE:
@@ -245,7 +248,16 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 
 	def chanceHandle(self, player):
-		pass
+		i = random.randint(0,5)
+		card = self.board.chanceCards[i]
+		#self.button_playerAction.setText(card.text)
+		player.setLocation(self.board.properties[int(card.location)])
+		#print(player.currPosition)
+	def communityChestHandle(self, player):
+		i = random.randint(0,5)
+		card = self.board.communityChestCards[i]
+		player.pay(int(card.amount))
+		
 
 	def bankHandle(self, player):
 		pass

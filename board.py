@@ -1,12 +1,13 @@
 #from player import *
 
-NUM_SPACES = 40
+NUM_SPACES = 39
 GAME_OWNED_PROPERTY = 40
 PROPERTY_SPACE = 0
 CHANCE_SPACE = 1
 BANK_SPACE = 2
 RAILROAD_SPACE = 3
 NOOP_SPACE = 4
+COMMUNITY_CHEST_SPACE = 5
 
 class Property():
 	"""Represents one property"""
@@ -33,6 +34,9 @@ class Property():
 		elif action == "3":
 			self.action = RAILROAD_SPACE
 			self.owner = None
+		elif action == "5":
+                        self.action = COMMUNITY_CHEST_SPACE
+                        self.owner = GAME_OWNED_PROPERTY
 		else:
 			self.action = NOOP_SPACE
 			self.owner = GAME_OWNED_PROPERTY
@@ -60,6 +64,7 @@ class Board():
 	def __init__(self):
 		self.properties = []
 		self.chanceCards = []
+		self.communityChestCards = []
                 with open("Properties.csv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines[1:]:
@@ -77,8 +82,27 @@ class Board():
 			text = line[7]
 			upText = line[8]
 			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,text,upText))
+		with open("Cards - ChanceTest.csv","r") as myFile:
+                        lines = myFile.readlines()
+                for line in lines:
+                        line = line.split(",")
+                        text = line[0]
+			location = line[1]
+			self.chanceCards.append(ChanceCards(text,location))
+		with open("Cards - CommunityChest Test.csv","r") as myFile:
+                        lines = myFile.readlines()
+                for line in lines:
+                        line = line.split(",")
+                        text = line[0]
+			amount = line[1]
+			self.communityChestCards.append(CommunityChestCards(text,amount))
+
 
 class ChanceCards():
+        def __init__(self, text, location):
+                self.text = text
+                self.location = location
+class CommunityChestCards():
         def __init__(self, text, amount):
                 self.text = text
                 self.amount = amount
