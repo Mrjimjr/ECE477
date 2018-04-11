@@ -13,10 +13,10 @@ class Property():
 	def __init__(self,position,name,action,price,rent,upRent,upCost,text,upText):
 		self.position = position
 		self.name = name
-		self.price = price
-		self.rent = rent
-		self.upRent = upRent
-		self.upCost = upCost
+		self.price = int(price)
+		self.rent = int(rent)
+		self.upRent = int(upRent)
+		self.upCost = int(upCost)
 		self.text = text
 		self.upText = upText
 		
@@ -58,6 +58,7 @@ class Board():
 	"""
 	def __init__(self):
 		self.properties = []
+		self.chanceCards = []
                 with open("Properties.csv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines[1:]:
@@ -76,6 +77,11 @@ class Board():
 			upText = line[8]
 			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,text,upText))
 
+class ChanceCards():
+        def __init__(self, text, amount):
+                self.text = text
+                self.amount = amount
+                
 if __name__ == "__main__":
         board = Board()
         prop = board.properties[0]
