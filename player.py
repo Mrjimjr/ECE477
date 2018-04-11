@@ -56,7 +56,7 @@ class Player():
 	# 	self.move(roll[0] + roll[1])
 
 	def dispStr(self):
-		st1 = """Position: {}\nMoney: {}\nProperties Owned: {}
+		st1 = """Position: {}\nMoney: ${}.00\nProperties Owned: {}
 		""".format(self.currPlace.name, self.money, self.numProperties)
 		st2 = ""
 		for prop in self.properties:
