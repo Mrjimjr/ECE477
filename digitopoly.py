@@ -4,6 +4,7 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 
 from ui_window import Ui_MainWindow
+from ui_propertyView import Ui_propertyView
 
 from player import Player
 from board import *
@@ -33,11 +34,20 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		# self.button_playerAction.clicked.connect(self.takeTurn)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		reconnect(self.button_playerAction.clicked, self.takeTurn)
+		reconnect(self.button_showProperties.clicked, self.openPropertyViewer)
 		
 		
+	def updatePlayerUI(self):
+		player = self.players[self.currPlayerNum]
+		self.label_currPlayerName.setText("Player {}:".format(player.playerNumber))
+		self.label_playerInfo.setText(player.dispStr()[0])
+		if len(player.properties) > 0:
+			self.button_showProperties.setEnabled(True)
+		else:
+			self.button_showProperties.setEnabled(False)
 
-	# def connect_gameUi(self):
-	# 	self.mainMenu.clicked.connect(self.returnToMain)
+	def openPropertyViewer(self):
+		print "Request to open Property Viewer"
 
 	def startGame(self):
 		# self.gameUi(self)
@@ -132,21 +142,6 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 
-
-		
-	def updatePlayerUI(self):
-		player = self.players[self.currPlayerNum]
-		self.label_currPlayerName.setText("Player {}:".format(player.playerNumber))
-		self.label_playerInfo.setText(player.dispStr()[0])
-		if len(player.properties) > 0:
-			self.label_playerInfo2.setText(player.dispStr()[1])
-		else:
-			self.label_playerInfo2.setText("")
-
-			
-
-
-
 	def chanceHandle(self, player):
 		pass
 	def communityChestHandle(self, player):
@@ -157,6 +152,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 	def railroadHandle(self, player):
 		pass
+
+
+
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles
 def reconnect(signal, newhandler=None, oldhandler=None):

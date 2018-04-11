@@ -145,20 +145,23 @@
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_playerInfo2">
+     <widget class="QPushButton" name="button_showProperties">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>230</x>
-        <y>30</y>
-        <width>221</width>
-        <height>101</height>
+        <x>260</x>
+        <y>10</y>
+        <width>191</width>
+        <height>121</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Player Info...</string>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <property name="text">
+       <string>Show My Properties</string>
       </property>
      </widget>
     </widget>
