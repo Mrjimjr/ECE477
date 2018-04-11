@@ -13,6 +13,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 	def __init__(self, parent=None):
 		super(MainGame, self).__init__(parent)
 		self.setupUi(self)
+		
 		self.connect_setupUi()
 		
 		# Actions
