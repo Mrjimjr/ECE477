@@ -272,25 +272,36 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		player.charge(currentPlace.price)
 
 		# Update UI
-		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
-		self.button_nextPlayer.setText("Next Player")
+		self.button_nextPlayer.setEnabled(True)
+		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)		
 
 	def chanceHandle(self, player):
 		i = random.randint(0,len(self.board.chanceCards)-1)
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
 		player.setLocation(self.board.properties[int(card.location)])
-		#print(player.currPosition)
+                self.button_playerAction.setEnabled(False)
+		self.button_nextPlayer.setEnabled(True)
+		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+		
 	def communityChestHandle(self, player):
 		i = random.randint(0,len(self.board.communityChestCards)-1)
 		card = self.board.communityChestCards[i]
 		player.pay(int(card.amount))
-		
+		# Update UI
+		self.button_playerAction.setEnabled(False)
+		self.button_nextPlayer.setText("Next Player")
+		self.button_playerAction.setEnabled(True)
 
 	def bankHandle(self, player):
 		property = self.board.properties[player.currPos]
 		player.pay(property.price)
+		# Update UI
+		self.updatePlayerUI()
+		self.button_playerAction.setEnabled(False)
+		self.button_nextPlayer.setText("Next Player")
+		self.button_playerAction.setEnabled(True)
 
 
 	def railroadHandle(self, player):
