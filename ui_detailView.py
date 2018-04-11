@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'detailView.ui'
 #
-# Created: Wed Apr 11 13:21:05 2018
+# Created: Wed Apr 11 16:10:58 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,6 +33,11 @@ class Ui_detailView(object):
         self.button_closeDetail.setGeometry(QtCore.QRect(470, 20, 71, 51))
         self.button_closeDetail.setAutoFillBackground(False)
         self.button_closeDetail.setObjectName("button_closeDetail")
+        self.button_upgrade = QtGui.QPushButton(self.frame)
+        self.button_upgrade.setEnabled(True)
+        self.button_upgrade.setGeometry(QtCore.QRect(470, 240, 71, 81))
+        self.button_upgrade.setAutoFillBackground(False)
+        self.button_upgrade.setObjectName("button_upgrade")
         self.widget = QtGui.QWidget(self.frame)
         self.widget.setGeometry(QtCore.QRect(170, 20, 291, 191))
         self.widget.setObjectName("widget")
@@ -81,6 +86,7 @@ class Ui_detailView(object):
         detailView.setWindowTitle(QtGui.QApplication.translate("detailView", "Property Detail", None, QtGui.QApplication.UnicodeUTF8))
         self.label_propText.setText(QtGui.QApplication.translate("detailView", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.button_closeDetail.setText(QtGui.QApplication.translate("detailView", "Close", None, QtGui.QApplication.UnicodeUTF8))
+        self.button_upgrade.setText(QtGui.QApplication.translate("detailView", "Upgrade", None, QtGui.QApplication.UnicodeUTF8))
         self.label_propName.setText(QtGui.QApplication.translate("detailView", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label_propCost.setText(QtGui.QApplication.translate("detailView", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label_propOwner.setText(QtGui.QApplication.translate("detailView", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))

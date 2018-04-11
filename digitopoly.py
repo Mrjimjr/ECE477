@@ -42,6 +42,12 @@ class DetailView(QMainWindow, Ui_detailView):
 
 		# Connect Buttons
 		reconnect(self.button_closeDetail.clicked, self.close)
+		if not self.property.upgraded:
+			reconnect(self.button_upgrade.clicked, self.upgrade)
+			self.button_upgrade.setEnabled(True)
+		else:
+			self.button_upgrade.setEnabled(False)
+
 
 	def updatePlayerUI(self):
 		player = self.player
@@ -69,6 +75,15 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.label_propOwner.setText("Owner: Player {}".format(prop.owner.playerNumber))
 		print prop.owner
 
+	def upgrade(self):
+		self.property.upgraded = True
+		self.property.rent = self.property.upRent
+		self.player.charge(self.property.upCost)
+		self.button_upgrade.setEnabled(False)
+		self.displayDetail()
+
+		
+
 class PropertyViewer(QMainWindow, Ui_propertyView):
 	"""This is the Property Viewer Object"""
 	def __init__(self, player, parent=None):
@@ -76,6 +91,7 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 
 		# Vars
 		self.player = player
+		self.parent = parent
 
 		self.detail_window = None
 		
@@ -131,8 +147,9 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 
 
 	def propDetailOpen(self, prop, player):
-		self.detail_window = DetailView(prop, self)
+		self.detail_window = DetailView(prop, player, self)
 		self.detail_window.showFullScreen()
+		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayerUI)
 
 
 class MainGame(QMainWindow, Ui_MainWindow):
@@ -180,6 +197,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		print "Request to open Property Viewer from Player " + str(player)
 		self.property_window = PropertyViewer(player, self)
 		self.property_window.showFullScreen()
+		self.property_window.button_closeProperties.clicked.connect(self.updatePlayerUI)
+
 
 	def startGame(self):
 		# self.gameUi(self)

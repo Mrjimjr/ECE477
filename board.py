@@ -18,7 +18,11 @@ class Property():
 		self.price = int(price)
 		self.rent = int(rent)
 		self.upRent = int(upRent)
-		self.upCost = upCost
+		try:
+			self.upCost = int(upCost)
+		except:
+			pass			
+		self.upgraded = False
 		self.text = text
 		self.upText = upText
 		self.image = "images/test.png"
