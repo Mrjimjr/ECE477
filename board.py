@@ -8,6 +8,7 @@ BANK_SPACE = 2
 RAILROAD_SPACE = 3
 NOOP_SPACE = 4
 COMMUNITY_CHEST_SPACE = 5
+RAILROADS = [5,15,25,35]
 
 class Property():
 	"""Represents one property"""
