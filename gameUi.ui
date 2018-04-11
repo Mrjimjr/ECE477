@@ -134,7 +134,7 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>191</width>
+        <width>271</width>
         <height>101</height>
        </rect>
       </property>
@@ -151,10 +151,10 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>10</y>
-        <width>191</width>
-        <height>121</height>
+        <x>290</x>
+        <y>80</y>
+        <width>161</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -175,16 +175,6 @@
    </widget>
    <zorder>frame_currentPlayerInfo</zorder>
    <zorder>button_fourPlayerStart</zorder>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>25</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">

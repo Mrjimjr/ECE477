@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gameUi.ui'
 #
-# Created: Wed Apr 11 08:52:03 2018
+# Created: Wed Apr 11 10:53:39 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,19 +51,15 @@ class Ui_MainWindow(object):
         self.label_currPlayerName.setScaledContents(False)
         self.label_currPlayerName.setObjectName("label_currPlayerName")
         self.label_playerInfo = QtGui.QLabel(self.frame_playerInfo)
-        self.label_playerInfo.setGeometry(QtCore.QRect(10, 30, 191, 101))
+        self.label_playerInfo.setGeometry(QtCore.QRect(10, 30, 271, 101))
         self.label_playerInfo.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_playerInfo.setObjectName("label_playerInfo")
         self.button_showProperties = QtGui.QPushButton(self.frame_playerInfo)
         self.button_showProperties.setEnabled(False)
-        self.button_showProperties.setGeometry(QtCore.QRect(260, 10, 191, 121))
+        self.button_showProperties.setGeometry(QtCore.QRect(290, 80, 161, 51))
         self.button_showProperties.setAutoFillBackground(False)
         self.button_showProperties.setObjectName("button_showProperties")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 25))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
