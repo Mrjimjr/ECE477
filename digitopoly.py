@@ -2,6 +2,7 @@ import sys
 
 from PySide.QtGui import *
 from PySide.QtCore import *
+import random
 
 from ui_window import Ui_MainWindow
 from ui_propertyView import Ui_propertyView
@@ -143,7 +144,11 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 
 	def chanceHandle(self, player):
-		pass
+		i = random.randint(0,5)
+		card = self.board.chanceCards[i]
+		#self.button_playerAction.setText(card.text)
+		#player.setLocation(self.board.properties[int(card.location)])
+		#print(player.currPosition)
 	def communityChestHandle(self, player):
 		pass
 
