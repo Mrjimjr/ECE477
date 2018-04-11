@@ -61,8 +61,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>190</y>
+       <x>740</x>
+       <y>590</y>
        <width>241</width>
        <height>71</height>
       </rect>
@@ -80,8 +80,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>190</y>
+       <x>980</x>
+       <y>590</y>
        <width>241</width>
        <height>71</height>
       </rect>
@@ -165,6 +165,133 @@
       </property>
      </widget>
     </widget>
+    <widget class="QFrame" name="frame_diceResult">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>460</y>
+       <width>481</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLabel" name="label_diceTitle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>91</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Roll Result:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Dice1">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>100</y>
+        <width>66</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dice 1</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Dice2">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>100</y>
+        <width>66</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dice 2</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_diceTotal">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>100</y>
+        <width>66</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Total</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_diceTotalImage">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>10</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>36</pointsize>
+        <weight>75</weight>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>12</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_dice1Image">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>81</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;Dice 1&gt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_dice2Image">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>10</y>
+        <width>81</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;Dice 2&gt;</string>
+      </property>
+     </widget>
+    </widget>
     <zorder>button_mainMenu</zorder>
     <zorder>button_playerAction</zorder>
     <zorder>button_nextPlayer</zorder>
@@ -172,6 +299,7 @@
     <zorder>frame_currentPlayerInfo_2</zorder>
     <zorder>frame_currentPlayerInfo_2</zorder>
     <zorder>frame_playerInfo</zorder>
+    <zorder>frame_diceResult</zorder>
    </widget>
    <zorder>frame_currentPlayerInfo</zorder>
    <zorder>button_fourPlayerStart</zorder>

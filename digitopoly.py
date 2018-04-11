@@ -181,8 +181,6 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.property_window = PropertyViewer(player, self)
 		self.property_window.showFullScreen()
 
-
-
 	def startGame(self):
 		# self.gameUi(self)
 		# self.connect_gameUi();
@@ -210,6 +208,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(True)
 		self.button_playerAction.setText("Roll Dice")
 		reconnect(self.button_playerAction.clicked, self.takeTurn)
+		self.frame_diceResult.setVisible(False)
+
 
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
@@ -229,6 +229,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		print "Player {} moved to index {}.".format(player.playerNumber, player.currPos)
 
 		# Update Player UI after Move
+		self.frame_diceResult.setVisible(True)
+		self.button_dice1Image.setText("")
+		self.button_dice1Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[0])))
+		self.button_dice2Image.setText("")
+		self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
+		self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
+
 		self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
@@ -283,9 +290,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
 		player.setLocation(self.board.properties[int(card.location)])
-                self.button_playerAction.setEnabled(False)
+		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+		self.updatePlayerUI()
 		
 	def communityChestHandle(self, player):
 		i = random.randint(0,len(self.board.communityChestCards)-1)
@@ -295,6 +303,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_playerAction.setEnabled(True)
+		self.updatePlayerUI()
 
 	def bankHandle(self, player):
 		property = self.board.properties[player.currPos]
@@ -304,43 +313,49 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_playerAction.setEnabled(True)
+		self.updatePlayerUI()
 
 
 	def railroadHandle(self, player):
-            currentPlace = self.board.properties[player.currPos]
-            if currentPlace.owner == None:
-                    print "Price: {}, Money:{}".format(currentPlace.price, player.money)
-                    if currentPlace.price <= player.money:
-                            self.button_playerAction.setText("Buy!")	
-                            reconnect(self.button_playerAction.clicked, (lambda: self.buyProperty(player, currentPlace)))
-                            self.button_nextPlayer.setEnabled(True)
-                            self.button_nextPlayer.setText("Pass")
-                            reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
-                    else:
-                            print "Player doesnt have enough money"
-                            self.button_playerAction.setEnabled(False)
-            else:
-                owner = currPlace.owner
-                print(owner)
+		currentPlace = self.board.properties[player.currPos]
+		if currentPlace.owner == None:
+				print "Price: {}, Money:{}".format(currentPlace.price, player.money)
+				if currentPlace.price <= player.money:
+						self.button_playerAction.setText("Buy!")	
+						reconnect(self.button_playerAction.clicked, (lambda: self.buyProperty(player, currentPlace)))
+						self.button_nextPlayer.setEnabled(True)
+						self.button_nextPlayer.setText("Pass")
+						reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+				else:
+						print "Player doesnt have enough money"
+						self.button_playerAction.setEnabled(False)
+		else:
+			owner = currPlace.owner
+			print(owner)
+		
+		self.updatePlayerUI()
+
+
+			  
 
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles
 def reconnect(signal, newhandler=None, oldhandler=None):
-    while True:
-        try:
-            if oldhandler is not None:
-                signal.disconnect(oldhandler)
-            else:
-                signal.disconnect()
-        except Exception:
-            break
-    if newhandler is not None:
-        signal.connect(newhandler)
+	while True:
+		try:
+			if oldhandler is not None:
+				signal.disconnect(oldhandler)
+			else:
+				signal.disconnect()
+		except Exception:
+			break
+	if newhandler is not None:
+		signal.connect(newhandler)
 
 
 if __name__ == '__main__':
-    currentApp = QApplication(sys.argv)
-    currentForm = MainGame()
+	currentApp = QApplication(sys.argv)
+	currentForm = MainGame()
 
-    currentForm.showFullScreen()
-    currentApp.exec_()
+	currentForm.showFullScreen()
+	currentApp.exec_()
