@@ -270,7 +270,18 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				print "Player doesnt have enough money"
 				self.button_playerAction.setEnabled(False)
 				self.button_nextPlayer.setEnabled(True)
-				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)			
+				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+
+		elif currentPlace.owner != player:
+			print "Player Needs to pay Rent"
+			player.charge(currentPlace.rent)
+			currentPlace.owner.pay(currentPlace.rent)
+			self.button_nextPlayer.setText("Next Player")
+			self.button_playerAction.setEnabled(False)
+			self.button_nextPlayer.setEnabled(True)
+
+		self.updatePlayerUI()
+
 
 	def buyProperty(self, player, currentPlace):
 		print "Player {} buying {}".format(str(player.playerNumber), str(currentPlace.name))
@@ -303,7 +314,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		# Update UI
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
-		self.button_playerAction.setEnabled(True)
+		self.button_nextPlayer.setEnabled(True)
 		self.updatePlayerUI()
 
 	def bankHandle(self, player):
@@ -329,8 +340,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				else:
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
-		else:
-			owner = currPlace.owner
+		elif currentPlace.owner != player:
+			print "Player must pay rent to railroad"
+			owner = currentPlace.owner
 			print(owner)
 		
 		self.updatePlayerUI()
