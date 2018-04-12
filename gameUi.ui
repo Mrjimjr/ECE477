@@ -14,7 +14,10 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="button_fourPlayerStart">
+   <widget class="QPushButton" name="button_newGame">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -24,7 +27,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>4 Player Start</string>
+     <string>Create New Game</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame_currentPlayerInfo">
@@ -164,6 +167,44 @@
        <string>Show My Properties</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="button_playerColorInd">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>10</y>
+        <width>71</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_button_playerPieceInd">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>71</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
     <widget class="QFrame" name="frame_diceResult">
      <property name="geometry">
@@ -292,17 +333,9 @@
       </property>
      </widget>
     </widget>
-    <zorder>button_mainMenu</zorder>
-    <zorder>button_playerAction</zorder>
-    <zorder>button_nextPlayer</zorder>
-    <zorder>frame_currentPlayerInfo_2</zorder>
-    <zorder>frame_currentPlayerInfo_2</zorder>
-    <zorder>frame_currentPlayerInfo_2</zorder>
-    <zorder>frame_playerInfo</zorder>
-    <zorder>frame_diceResult</zorder>
    </widget>
    <zorder>frame_currentPlayerInfo</zorder>
-   <zorder>button_fourPlayerStart</zorder>
+   <zorder>button_newGame</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">

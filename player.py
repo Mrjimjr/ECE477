@@ -3,11 +3,12 @@ from board import *
 
 class Player():
 
-	def __init__(self, playerNumber, currPos, currPlace, color):
+	def __init__(self, playerNumber, currPos, currPlace, color, piece):
 		self.playerNumber = playerNumber
 		self.currPos = currPos
 		self.currPlace = currPlace
 		self.color = color
+		self.piece = piece
 		self.money = 500
 		self.properties = []
 		self.numProperties = 0

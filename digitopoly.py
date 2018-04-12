@@ -7,15 +7,24 @@ import random
 from multiprocessing import Process
 import os
 import time
+import random
 import serial
 
 from ui_window import Ui_MainWindow
 from ui_propertyView import Ui_propertyView
 from ui_detailView import Ui_detailView
+from ui_mainMenu import Ui_mainMenu
 
 from player import Player
 from board import *
 
+# 				Red 		Orange 		Yellow 		Green 		Teal 		Blue 		Purple		Pink
+# RGB
+COLOR_PRESETS_RGB = ["rgb(255,0,0)", "rgb(255,90,0)", "rgb(255,255,0)", "rgb(0,255,0)", "rgb(0,255,255)", "rgb(0,0,255)", "rgb(120,0,255)", "rgb(255,0,191)"]
+# GRB
+COLOR_PRESETS_GRB = set(["grb(0,255,0)", "grb(90,255,0)", "grb(255,255,0)", "grb(255,0,0)", "grb(255,0,255)", "grb(0,0,255)", "grb(0,120,255)", "grb(0,255,191)"])
+# Player Pieces
+PLAYER_PIECES = ["images/pieces/1.png", "images/pieces/2.png", "images/pieces/3.png", "images/pieces/4.png", "images/pieces/5.png", "images/pieces/6.png", "images/pieces/7.png", "images/pieces/8.png"]
 
 class DetailView(QMainWindow, Ui_detailView):
 	"""This is the Property Viewer Object"""
@@ -60,6 +69,8 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber))
 		self.label_playerInfo_2.setText(player.dispStr()[0])
 		self.button_closeDetail.setEnabled(True)
+		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
+		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
 
 	def displayDetail(self):
 		prop = self.property
@@ -117,6 +128,8 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 		player = self.player
 		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber))
 		self.label_playerInfo_2.setText(player.dispStr()[0])
+		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
+		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
 		self.button_closeProperties.setEnabled(True)
 
 	def displayProps(self):
@@ -157,6 +170,140 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 		self.detail_window.showFullScreen()
 		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayerUI)
 
+class MainMenu(QMainWindow, Ui_mainMenu):
+	"""docstring for MainMenu"""
+	def __init__(self, parent=None):
+		super(MainMenu, self).__init__(parent)
+		
+		self.setupUi(self)
+		self.button_startGame.clicked.connect(self.hide)
+
+		self.button_createNewGame.clicked.connect(self.createGame)
+		self.button_startGame.clicked.connect(lambda: self.button_addPlayer.setEnabled(False))
+		self.button_addPlayer.clicked.connect(self.addPlayer)
+		# Player Create Window
+		self.frame_newPlayer.setVisible(False)
+		self.frame_colorPicker.setVisible(False)
+		self.frame_piecePicker.setVisible(False)
+
+		# Player Buttons
+		self.playerLabels = [self.label_player1, self.label_player2, self.label_player3, self.label_player4]
+		self.playerColorButtons = [self.button_player1Color, self.button_player2Color, self.button_player3Color, self.button_player4Color]
+		self.playerPieceButtons = [self.button_player1Piece, self.button_player2Piece, self.button_player3Piece, self.button_player4Piece]
+		self.colorPickerButtons = [self.button_color_1, self.button_color_2, self.button_color_3, self.button_color_4, self.button_color_5, self.button_color_6, self.button_color_7, self.button_color_8]
+		self.piecePickerButtons = [self.button_piecePicker_1, self.button_piecePicker_2, self.button_piecePicker_3, self.button_piecePicker_4, self.button_piecePicker_5, self.button_piecePicker_6, self.button_piecePicker_7, self.button_piecePicker_8]
+
+		# for button in self.playerColorButtons:
+		# 	reconnect(button.clicked, self.colorPicker)
+
+		self.playerColorButtons[0].clicked.connect(lambda x = 0: self.colorPicker(x))
+		self.playerColorButtons[1].clicked.connect(lambda x = 1: self.colorPicker(x))
+		self.playerColorButtons[2].clicked.connect(lambda x = 2: self.colorPicker(x))
+		self.playerColorButtons[3].clicked.connect(lambda x = 3: self.colorPicker(x))
+
+		self.playerPieceButtons[0].clicked.connect(lambda x = 0: self.piecePicker(x))
+		self.playerPieceButtons[1].clicked.connect(lambda x = 1: self.piecePicker(x))
+		self.playerPieceButtons[2].clicked.connect(lambda x = 2: self.piecePicker(x))
+		self.playerPieceButtons[3].clicked.connect(lambda x = 3: self.piecePicker(x))
+
+		self.playerColors = []
+		self.playerPieces = []
+
+		self.numPlayers = 0
+
+		x = 0
+		for btn in self.colorPickerButtons:
+			btn.setStyleSheet("background-color:{};".format(COLOR_PRESETS_RGB[x]))
+			x = x + 1
+
+		x = 0
+		for btn in self.piecePickerButtons:
+			btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(PLAYER_PIECES[x]))
+			x = x + 1
+
+
+	def colorPicker(self, playerNum):
+		self.frame_colorPicker.setVisible(True)
+		for x in range(0, len(self.colorPickerButtons)):
+			if COLOR_PRESETS_RGB[x] in self.playerColors:
+				self.colorPickerButtons[x].setVisible(False)
+			else:
+				self.colorPickerButtons[x].setVisible(True)
+				# print "Connecting {} to {}".format(self.colorPickerButtons[x].clicked, (lambda: self.setColor(playerNum, x)))
+				reconnect(self.colorPickerButtons[x].clicked, (lambda pnum=playerNum, inp=x: self.setColor(pnum, inp)))
+
+	def setColor(self, playerNum, colorNum):
+		print "Setting Player {} Color to {}".format(playerNum, colorNum)
+		self.frame_colorPicker.setVisible(False)
+		old_color = self.playerColors[playerNum]
+		self.colors.append(old_color)
+		color = COLOR_PRESETS_RGB[colorNum]		
+		self.colors.remove(color)
+		self.playerColors[playerNum] = color
+		self.playerColorButtons[playerNum].setStyleSheet("background-color:{};".format(color))
+
+	def piecePicker(self, playerNum):
+		self.frame_piecePicker.setVisible(True)
+		print PLAYER_PIECES
+		print self.pieces
+		print self.playerPieces
+		for x in range(0, len(self.piecePickerButtons)):
+			if PLAYER_PIECES[x] in self.playerPieces:
+				self.piecePickerButtons[x].setVisible(False)
+			else:
+				self.piecePickerButtons[x].setVisible(True)
+				# print "Connecting {} to {}".format(self.colorPickerButtons[x].clicked, (lambda: self.setColor(playerNum, x)))
+				reconnect(self.piecePickerButtons[x].clicked, (lambda pnum=playerNum, inp=x: self.setPiece(pnum, inp)))
+
+	def setPiece(self, playerNum, pieceNum):
+		print "Setting Player {} Piece to {}".format(playerNum, pieceNum)
+		self.frame_piecePicker.setVisible(False)
+		old_piece = self.playerPieces[playerNum]
+		self.pieces.append(old_piece)
+		piece = PLAYER_PIECES[pieceNum]		
+		self.pieces.remove(piece)
+		self.playerPieces[playerNum] = piece
+		self.playerPieceButtons[playerNum].setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(piece))
+
+	def createGame(self):
+		self.frame_newPlayer.setVisible(True)
+		self.numPlayers = 0
+		self.button_addPlayer.setEnabled(True)
+		self.button_startGame.setEnabled(False)
+
+		self.playerColors = []
+		self.playerPieces = []		
+		self.colors = list(COLOR_PRESETS_RGB)
+		self.pieces = list(PLAYER_PIECES)
+		for x in range(0, 4):
+			self.playerLabels[x].setVisible(False)
+			self.playerColorButtons[x].setVisible(False)
+			self.playerPieceButtons[x].setVisible(False)
+
+	def addPlayer(self):
+		self.numPlayers = self.numPlayers + 1
+		if self.numPlayers >= 2:
+			self.button_startGame.setEnabled(True)
+		if self.numPlayers == 4:
+			self.button_addPlayer.setEnabled(False)
+
+		self.playerLabels[self.numPlayers - 1].setVisible(True)
+		self.playerColorButtons[self.numPlayers - 1].setVisible(True)
+		self.playerPieceButtons[self.numPlayers - 1].setVisible(True)
+
+		# Select a Color at Random From the Color Pool
+		color = random.sample(self.colors, 1)[0]
+		self.colors.remove(color)
+		self.playerColors.append(color)
+		self.playerColorButtons[self.numPlayers - 1].setStyleSheet("background-color:{};".format(color))
+
+		# Select a Piece at Random From the Color Pool
+		piece = random.sample(self.pieces, 1)[0]
+		print piece
+		self.pieces.remove(piece)
+		self.playerPieces.append(piece)
+		self.playerPieceButtons[self.numPlayers - 1].setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(piece))
+
 
 class MainGame(QMainWindow, Ui_MainWindow):
 	"""This is the Main Game Object"""
@@ -166,8 +313,17 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		
 		self.connect_setupUi()
 		
-		# Actions
+		# Create Main Menu Object
+		self.menu_window = MainMenu(self)
+		self.button_newGame.clicked.connect(self.mainMenu)
+		# self.menu_window.showFullScreen()
+
+
+		# Main Menu Signals
 		self.button_mainMenu.clicked.connect(self.mainMenu)
+		self.menu_window.button_startGame.clicked.connect(self.startGame)
+		# self.button_startGame.clicked.connect
+
 
 		# Vars
 		self.players = []
@@ -178,7 +334,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.property_window = None
 
 	def connect_setupUi(self):
-		self.button_fourPlayerStart.clicked.connect(self.startGame)
+		# self.button_fourPlayerStart.clicked.connect(self.startGame)
 		self.frame_currentPlayerInfo.setVisible(0)
 
 		# Actually in gameUi:
@@ -189,13 +345,16 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		reconnect(self.button_showProperties.clicked, self.openPropertyViewer)
 		
 	def mainMenu(self):
-		self.menu_window = DetailView(prop, player, self)
 		self.menu_window.showFullScreen()
 		
 	def updatePlayerUI(self):
 		player = self.players[self.currPlayerNum]
 		self.label_currPlayerName.setText("Player {}:".format(player.playerNumber))
 		self.label_playerInfo.setText(player.dispStr()[0])
+		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
+		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
+		# self.button_button_playerPieceInd.
+
 		if len(player.properties) > 0:
 			self.button_showProperties.setEnabled(True)
 		else:
@@ -212,16 +371,20 @@ class MainGame(QMainWindow, Ui_MainWindow):
 	def startGame(self):
 		# self.gameUi(self)
 		# self.connect_gameUi();
-		self.frame_currentPlayerInfo.setVisible(1)
-		self.button_fourPlayerStart.setVisible(0)
+		print "Setting Up Game"
+		self.frame_currentPlayerInfo.setVisible(False)
+		self.button_newGame.setVisible(False)
+		self.frame_currentPlayerInfo.setVisible(True)
 
 		self.board = Board()
+		self.players = []
 
-		numPlayers = 4
+		self.menu_window.playerColors
+		numPlayers = len(self.menu_window.playerColors)
+
 		for x in range(0, numPlayers):
-			player = Player(x, 0, self.board.properties[0], "255 255 255")
+			player = Player(x, 0, self.board.properties[0], self.menu_window.playerColors[x], self.menu_window.playerPieces[x])
 			self.players.append(player)
-
 
 		self.getNextPlayer()
 
@@ -413,6 +576,7 @@ def updateLED(led, mode, red = "", green = "", blue = ""):
 
 def mouse():
 	print "Starting Mouse Emulation pid={}".format(os.getppid())
+	'''
 	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
 
 	while True:
@@ -429,6 +593,7 @@ def mouse():
 			print e
 			
 		time.sleep(10)
+	'''
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gameUi.ui'
 #
-# Created: Thu Apr 12 13:30:27 2018
+# Created: Thu Apr 12 17:40:04 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,9 +15,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(1280, 720)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.button_fourPlayerStart = QtGui.QPushButton(self.centralwidget)
-        self.button_fourPlayerStart.setGeometry(QtCore.QRect(410, 340, 241, 71))
-        self.button_fourPlayerStart.setObjectName("button_fourPlayerStart")
+        self.button_newGame = QtGui.QPushButton(self.centralwidget)
+        self.button_newGame.setEnabled(True)
+        self.button_newGame.setGeometry(QtCore.QRect(410, 340, 241, 71))
+        self.button_newGame.setObjectName("button_newGame")
         self.frame_currentPlayerInfo = QtGui.QFrame(self.centralwidget)
         self.frame_currentPlayerInfo.setGeometry(QtCore.QRect(0, 0, 1280, 720))
         self.frame_currentPlayerInfo.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -59,6 +60,18 @@ class Ui_MainWindow(object):
         self.button_showProperties.setGeometry(QtCore.QRect(290, 80, 161, 51))
         self.button_showProperties.setAutoFillBackground(False)
         self.button_showProperties.setObjectName("button_showProperties")
+        self.button_playerColorInd = QtGui.QPushButton(self.frame_playerInfo)
+        self.button_playerColorInd.setEnabled(False)
+        self.button_playerColorInd.setGeometry(QtCore.QRect(290, 10, 71, 61))
+        self.button_playerColorInd.setAutoFillBackground(False)
+        self.button_playerColorInd.setText("")
+        self.button_playerColorInd.setObjectName("button_playerColorInd")
+        self.button_button_playerPieceInd = QtGui.QPushButton(self.frame_playerInfo)
+        self.button_button_playerPieceInd.setEnabled(False)
+        self.button_button_playerPieceInd.setGeometry(QtCore.QRect(370, 10, 71, 61))
+        self.button_button_playerPieceInd.setAutoFillBackground(False)
+        self.button_button_playerPieceInd.setText("")
+        self.button_button_playerPieceInd.setObjectName("button_button_playerPieceInd")
         self.frame_diceResult = QtGui.QFrame(self.frame_currentPlayerInfo)
         self.frame_diceResult.setGeometry(QtCore.QRect(740, 460, 481, 121))
         self.frame_diceResult.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -108,7 +121,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_fourPlayerStart.setText(QtGui.QApplication.translate("MainWindow", "4 Player Start", None, QtGui.QApplication.UnicodeUTF8))
+        self.button_newGame.setText(QtGui.QApplication.translate("MainWindow", "Create New Game", None, QtGui.QApplication.UnicodeUTF8))
         self.button_mainMenu.setText(QtGui.QApplication.translate("MainWindow", "Main Menu", None, QtGui.QApplication.UnicodeUTF8))
         self.button_playerAction.setText(QtGui.QApplication.translate("MainWindow", "Roll Dice", None, QtGui.QApplication.UnicodeUTF8))
         self.button_nextPlayer.setText(QtGui.QApplication.translate("MainWindow", "End Turn", None, QtGui.QApplication.UnicodeUTF8))

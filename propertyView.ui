@@ -105,6 +105,44 @@
       <string>Close My Properties</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="button_playerColorInd">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>10</y>
+       <width>71</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_button_playerPieceInd">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>10</y>
+       <width>71</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget_3">
     <property name="geometry">
@@ -214,7 +252,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -815,19 +853,7 @@
     </layout>
    </widget>
    <zorder>frame_playerInfo</zorder>
-   <zorder>button_pro_1</zorder>
-   <zorder>button_pro_2</zorder>
-   <zorder>button_pro_3</zorder>
-   <zorder>button_pro_4</zorder>
-   <zorder>button_pro_5</zorder>
-   <zorder>button_pro_6</zorder>
-   <zorder>button_pro_7</zorder>
-   <zorder>button_pro_8</zorder>
-   <zorder>button_prop_9</zorder>
-   <zorder>button_prop_10</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget_2</zorder>
-   <zorder>button_pro_16</zorder>
    <zorder>layoutWidget_3</zorder>
   </widget>
  </widget>
