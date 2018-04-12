@@ -2,7 +2,12 @@ import sys
 
 from PySide.QtGui import *
 from PySide.QtCore import *
+
 import random
+from multiprocessing import Process
+import os
+import time
+import serial
 
 from ui_window import Ui_MainWindow
 from ui_propertyView import Ui_propertyView
@@ -10,6 +15,7 @@ from ui_detailView import Ui_detailView
 
 from player import Player
 from board import *
+
 
 class DetailView(QMainWindow, Ui_detailView):
 	"""This is the Property Viewer Object"""
@@ -161,6 +167,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.connect_setupUi()
 		
 		# Actions
+		self.button_mainMenu.clicked.connect(self.mainMenu)
 
 		# Vars
 		self.players = []
@@ -174,7 +181,6 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_fourPlayerStart.clicked.connect(self.startGame)
 		self.frame_currentPlayerInfo.setVisible(0)
 
-
 		# Actually in gameUi:
 		# self.button_nextPlayer.clicked.connect(self.getNextPlayer)
 		# self.button_playerAction.clicked.connect(self.takeTurn)
@@ -182,6 +188,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		reconnect(self.button_playerAction.clicked, self.takeTurn)
 		reconnect(self.button_showProperties.clicked, self.openPropertyViewer)
 		
+	def mainMenu(self):
+		self.menu_window = DetailView(prop, player, self)
+		self.menu_window.showFullScreen()
 		
 	def updatePlayerUI(self):
 		player = self.players[self.currPlayerNum]
@@ -383,10 +392,55 @@ def reconnect(signal, newhandler=None, oldhandler=None):
 	if newhandler is not None:
 		signal.connect(newhandler)
 
+def updateLED(led, mode, red = "", green = "", blue = ""):
+	""" params: values should be strings
+			led: Give the Space Number to light
+			mode: (S/B/R)
+				S: Solid LED Color
+				B: Blinking Solid LED Color
+				R: Random LED Color
+			red: Red Value 0-255 of the LED for <S> and <B>
+			green: Green Value 0-255 of the LED for <S> and <B>
+			blue: Blue Value 0-255 of the LED for <S> and <B>
+	"""
+	# Build String
+	string = "{}".format(led, mode, green, red, blue)
+	try:
+		with open("LEDs", 'w') as f:
+			f.write(value)	
+	except Exception as e:
+		print e
+
+def mouse():
+	print "Starting Mouse Emulation pid={}".format(os.getppid())
+	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
+
+	while True:
+		# Move mouse to x y location
+		os.system("xdotool mousemove {} {}".format(100, 300))
+		# Left Click
+		os.system("xdotool click 1")
+
+		try:
+			with open("LEDs", 'r') as f:
+				led_data = f.read()	
+				port.write(led_data)
+		except Exception as e:
+			print e
+			
+		time.sleep(10)
+
 
 if __name__ == '__main__':
+	print "Starting Game pid={}".format(os.getpid())
+	# Start Mouse Emulation 
+	p = Process(target=mouse)
+	p.start()
+
 	currentApp = QApplication(sys.argv)
 	currentForm = MainGame()
 
 	currentForm.showFullScreen()
 	currentApp.exec_()
+	
+	p.terminate()
