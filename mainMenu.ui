@@ -452,14 +452,6 @@
    <property name="orientation">
     <enum>Qt::Vertical</enum>
    </property>
-   <widget class="QPushButton" name="button_createNewGame">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="text">
-     <string>Create New Game</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="button_startGame">
     <property name="enabled">
      <bool>false</bool>
@@ -625,7 +617,7 @@
      <item>
       <widget class="QPushButton" name="button_piecePicker_8">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -637,6 +629,22 @@
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="button_createNewGame">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>70</y>
+     <width>251</width>
+     <height>113</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Create New Game</string>
+   </property>
   </widget>
  </widget>
  <resources/>

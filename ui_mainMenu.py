@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainMenu.ui'
 #
-# Created: Thu Apr 12 18:01:03 2018
+# Created: Thu Apr 12 18:29:22 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -206,9 +206,6 @@ class Ui_mainMenu(object):
         self.splitter.setGeometry(QtCore.QRect(20, 190, 251, 231))
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName("splitter")
-        self.button_createNewGame = QtGui.QPushButton(self.splitter)
-        self.button_createNewGame.setEnabled(True)
-        self.button_createNewGame.setObjectName("button_createNewGame")
         self.button_startGame = QtGui.QPushButton(self.splitter)
         self.button_startGame.setEnabled(False)
         self.button_startGame.setObjectName("button_startGame")
@@ -302,7 +299,7 @@ class Ui_mainMenu(object):
         self.button_piecePicker_7.setObjectName("button_piecePicker_7")
         self.horizontalLayout_2.addWidget(self.button_piecePicker_7)
         self.button_piecePicker_8 = QtGui.QPushButton(self.widget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.button_piecePicker_8.sizePolicy().hasHeightForWidth())
@@ -310,6 +307,10 @@ class Ui_mainMenu(object):
         self.button_piecePicker_8.setText("")
         self.button_piecePicker_8.setObjectName("button_piecePicker_8")
         self.horizontalLayout_2.addWidget(self.button_piecePicker_8)
+        self.button_createNewGame = QtGui.QPushButton(mainMenu)
+        self.button_createNewGame.setEnabled(True)
+        self.button_createNewGame.setGeometry(QtCore.QRect(20, 70, 251, 113))
+        self.button_createNewGame.setObjectName("button_createNewGame")
 
         self.retranslateUi(mainMenu)
         QtCore.QMetaObject.connectSlotsByName(mainMenu)
@@ -325,7 +326,7 @@ class Ui_mainMenu(object):
         self.label_playersTitle.setText(QtGui.QApplication.translate("mainMenu", "Color", None, QtGui.QApplication.UnicodeUTF8))
         self.label_playersTitle_2.setText(QtGui.QApplication.translate("mainMenu", "Piece", None, QtGui.QApplication.UnicodeUTF8))
         self.label_colorPicker.setText(QtGui.QApplication.translate("mainMenu", "Pick Your Color", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_createNewGame.setText(QtGui.QApplication.translate("mainMenu", "Create New Game", None, QtGui.QApplication.UnicodeUTF8))
         self.button_startGame.setText(QtGui.QApplication.translate("mainMenu", "Start Game", None, QtGui.QApplication.UnicodeUTF8))
         self.label_colorPicker_2.setText(QtGui.QApplication.translate("mainMenu", "Pick Your Piece", None, QtGui.QApplication.UnicodeUTF8))
+        self.button_createNewGame.setText(QtGui.QApplication.translate("mainMenu", "Create New Game", None, QtGui.QApplication.UnicodeUTF8))
 
