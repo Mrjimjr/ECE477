@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'detailView.ui'
 #
-# Created: Wed Apr 11 16:10:58 2018
+# Created: Wed Apr 11 23:52:30 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,32 +14,32 @@ class Ui_detailView(object):
         detailView.setObjectName("detailView")
         detailView.resize(1036, 632)
         self.frame = QtGui.QFrame(detailView)
-        self.frame.setGeometry(QtCore.QRect(280, 130, 551, 331))
+        self.frame.setGeometry(QtCore.QRect(240, 130, 591, 331))
         self.frame.setAutoFillBackground(True)
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setLineWidth(4)
         self.frame.setObjectName("frame")
         self.propIcon = QtGui.QPushButton(self.frame)
-        self.propIcon.setGeometry(QtCore.QRect(10, 10, 151, 201))
+        self.propIcon.setGeometry(QtCore.QRect(10, 10, 200, 200))
         self.propIcon.setText("")
         self.propIcon.setObjectName("propIcon")
         self.label_propText = QtGui.QLabel(self.frame)
-        self.label_propText.setGeometry(QtCore.QRect(20, 220, 421, 91))
+        self.label_propText.setGeometry(QtCore.QRect(60, 220, 421, 91))
         self.label_propText.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propText.setObjectName("label_propText")
         self.button_closeDetail = QtGui.QPushButton(self.frame)
         self.button_closeDetail.setEnabled(True)
-        self.button_closeDetail.setGeometry(QtCore.QRect(470, 20, 71, 51))
+        self.button_closeDetail.setGeometry(QtCore.QRect(510, 20, 71, 51))
         self.button_closeDetail.setAutoFillBackground(False)
         self.button_closeDetail.setObjectName("button_closeDetail")
         self.button_upgrade = QtGui.QPushButton(self.frame)
         self.button_upgrade.setEnabled(True)
-        self.button_upgrade.setGeometry(QtCore.QRect(470, 240, 71, 81))
+        self.button_upgrade.setGeometry(QtCore.QRect(510, 240, 71, 81))
         self.button_upgrade.setAutoFillBackground(False)
         self.button_upgrade.setObjectName("button_upgrade")
         self.widget = QtGui.QWidget(self.frame)
-        self.widget.setGeometry(QtCore.QRect(170, 20, 291, 191))
+        self.widget.setGeometry(QtCore.QRect(220, 20, 291, 191))
         self.widget.setObjectName("widget")
         self.verticalLayout = QtGui.QVBoxLayout(self.widget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)

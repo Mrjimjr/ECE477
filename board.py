@@ -13,7 +13,7 @@ RAILROADS = [5,15,25,35]
 class Property():
 	"""Represents one property"""
 	def __init__(self,position,name,action,price,rent,upRent,upCost,text,upText):
-		self.position = position
+		self.position = int(position)
 		self.name = name
 		self.price = int(price)
 		self.rent = int(rent)
@@ -25,7 +25,7 @@ class Property():
 		self.upgraded = False
 		self.text = text
 		self.upText = upText
-		self.image = "images/test.png"
+		self.image = "images/tiles/{}.png".format(self.position + 1)
 		
 		if action == "0":
 			self.action = PROPERTY_SPACE

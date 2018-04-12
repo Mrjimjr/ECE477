@@ -42,7 +42,7 @@ class DetailView(QMainWindow, Ui_detailView):
 
 		# Connect Buttons
 		reconnect(self.button_closeDetail.clicked, self.close)
-		if not self.property.upgraded:
+		if not self.property.upgraded and not (self.property.action == RAILROAD_SPACE):
 			reconnect(self.button_upgrade.clicked, self.upgrade)
 			self.button_upgrade.setEnabled(True)
 		else:
