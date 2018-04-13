@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1261</width>
+    <height>772</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
    <widget class="QFrame" name="frame_currentPlayerInfo">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-40</x>
       <y>0</y>
       <width>1280</width>
       <height>720</height>
@@ -332,6 +332,29 @@
        <string>&lt;Dice 2&gt;</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QWidget" name="spotImage" native="true">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>230</y>
+       <width>411</width>
+       <height>371</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="spotText">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>100</y>
+       <width>461</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
     </widget>
    </widget>
    <zorder>frame_currentPlayerInfo</zorder>
