@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gameUi.ui'
 #
-# Created: Thu Apr 12 17:40:04 2018
+# Created: Fri Apr 13 16:31:25 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1261, 772)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.button_newGame = QtGui.QPushButton(self.centralwidget)
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.button_newGame.setGeometry(QtCore.QRect(410, 340, 241, 71))
         self.button_newGame.setObjectName("button_newGame")
         self.frame_currentPlayerInfo = QtGui.QFrame(self.centralwidget)
-        self.frame_currentPlayerInfo.setGeometry(QtCore.QRect(0, 0, 1280, 720))
+        self.frame_currentPlayerInfo.setGeometry(QtCore.QRect(-40, 0, 1280, 720))
         self.frame_currentPlayerInfo.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_currentPlayerInfo.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_currentPlayerInfo.setObjectName("frame_currentPlayerInfo")
@@ -108,6 +108,13 @@ class Ui_MainWindow(object):
         self.button_dice2Image = QtGui.QPushButton(self.frame_diceResult)
         self.button_dice2Image.setGeometry(QtCore.QRect(220, 10, 81, 81))
         self.button_dice2Image.setObjectName("button_dice2Image")
+        self.spotImage = QtGui.QWidget(self.frame_currentPlayerInfo)
+        self.spotImage.setGeometry(QtCore.QRect(130, 230, 411, 371))
+        self.spotImage.setObjectName("spotImage")
+        self.spotText = QtGui.QLabel(self.frame_currentPlayerInfo)
+        self.spotText.setGeometry(QtCore.QRect(740, 100, 461, 231))
+        self.spotText.setText("")
+        self.spotText.setObjectName("spotText")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
