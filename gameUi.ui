@@ -6,18 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1261</width>
-    <height>772</height>
+    <width>1293</width>
+    <height>771</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="button_newGame">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
+   <widget class="QPushButton" name="button_fourPlayerStart">
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -27,13 +24,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>Create New Game</string>
+     <string>4 Player Start</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame_currentPlayerInfo">
     <property name="geometry">
      <rect>
-      <x>-40</x>
+      <x>10</x>
       <y>0</y>
       <width>1280</width>
       <height>720</height>
@@ -167,44 +164,6 @@
        <string>Show My Properties</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="button_playerColorInd">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>10</y>
-        <width>71</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="button_button_playerPieceInd">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>10</y>
-        <width>71</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
     </widget>
     <widget class="QFrame" name="frame_diceResult">
      <property name="geometry">
@@ -333,32 +292,9 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="spotImage" native="true">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>230</y>
-       <width>411</width>
-       <height>371</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="spotText">
-     <property name="geometry">
-      <rect>
-       <x>740</x>
-       <y>100</y>
-       <width>461</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
    </widget>
    <zorder>frame_currentPlayerInfo</zorder>
-   <zorder>button_newGame</zorder>
+   <zorder>button_fourPlayerStart</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">

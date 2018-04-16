@@ -400,6 +400,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setText("Roll Dice")
 		reconnect(self.button_playerAction.clicked, self.takeTurn)
 		self.frame_diceResult.setVisible(False)
+		
 
 
 		# Update Player UI
@@ -426,7 +427,11 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_dice2Image.setText("")
 		self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
 		self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
-
+                self.spotImage.setVisible(True)
+                # Update background
+                self.spotImage.setStyleSheet("background-image: url('{}') 0 0 0 0 stretch stretch;".format((self.board.properties[player.currPos]).spotImage))
+		#self.spotText.setText("Hello World")
+                self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
 		self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
@@ -470,6 +475,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.button_nextPlayer.setText("Next Player")
 			self.button_playerAction.setEnabled(False)
 			self.button_nextPlayer.setEnabled(True)
+			
+			self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
 
 		self.updatePlayerUI()
 

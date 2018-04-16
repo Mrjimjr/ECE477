@@ -26,6 +26,7 @@ class Property():
 		self.text = text
 		self.upText = upText
 		self.image = "images/tiles/{}.png".format(self.position + 1)
+		self.spotImage = "images/spotImages/{}.png".format(self.position + 1)
 		
 		if action == "0":
 			self.action = PROPERTY_SPACE
