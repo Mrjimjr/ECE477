@@ -57,7 +57,7 @@ class DetailView(QMainWindow, Ui_detailView):
 
 		# Connect Buttons
 		reconnect(self.button_closeDetail.clicked, self.close)
-		if not self.property.upgraded and not (self.property.action == RAILROAD_SPACE):
+		if not (self.property.upgraded) and not (self.property.action == RAILROAD_SPACE) and (self.property.owner != None):
 			reconnect(self.button_upgrade.clicked, self.upgrade)
 			self.button_upgrade.setEnabled(True)
 		else:
@@ -77,20 +77,24 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.propIcon.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
 		self.label_propName.setText(str(prop.name))
 		print prop.name
-		self.label_propCost.setText("Property Cost:${}.00".format(prop.price))
+		self.label_propCost.setText("Cost to Buy: ${}.00".format(prop.price))
 		print prop.price
-		self.label_propText.setText(prop.text)
-		print prop.text
-		self.label_propRent.setText("Rental Cost: ${}.00".format(prop.rent))
-		print prop.rent
-		self.label_propUpCost.setText("Upgrade Cost: ${}.00".format(prop.upCost))
-		print prop.upCost
-		self.label_propUpRent.setText("Upgraded Rental Cost: ${}.00".format(prop.upRent))
-		print prop.upRent
-		self.label_propUpText.setText(str(prop.upText))
+		self.label_propText.setText(str(prop.upText))
 		print prop.upText
-		self.label_propOwner.setText("Owner: Player {}".format(prop.owner.playerNumber))
-		print prop.owner
+		self.label_propRent.setText("Cost to Visit: ${}.00".format(prop.rent))
+		print prop.rent
+		self.label_propUpCost.setText("Cost to Upgrade: ${}.00".format(prop.upCost))
+		print prop.upCost
+		self.label_propUpRent.setText("Cost to Visit after Upgrade: ${}.00".format(prop.upRent))
+		print prop.upRent
+		self.label_propUpText.setText("")
+		#print prop.upText
+		try:
+                    self.label_propOwner.setText("Current Owner: Player {}".format(prop.owner.playerNumber))
+                except:
+                    self.button_upgrade.setEnabled(False)
+                    self.label_propOwner.setText("Current Owner: No owner yet.")
+		#print prop.owner
 
 	def upgrade(self):
 		self.property.upgraded = True
@@ -334,6 +338,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.property_window = None
 
 	def connect_setupUi(self):
+
 		# self.button_fourPlayerStart.clicked.connect(self.startGame)
 		self.frame_currentPlayerInfo.setVisible(0)
 
@@ -343,6 +348,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		reconnect(self.button_playerAction.clicked, self.takeTurn)
 		reconnect(self.button_showProperties.clicked, self.openPropertyViewer)
+		reconnect(self.button_spotImage.clicked, self.propDetailOpen)
+
 		
 	def mainMenu(self):
 		self.menu_window.showFullScreen()
@@ -366,6 +373,14 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.property_window = PropertyViewer(player, self)
 		self.property_window.showFullScreen()
 		self.property_window.button_closeProperties.clicked.connect(self.updatePlayerUI)
+		
+	def propDetailOpen(self):
+                player = self.players[self.currPlayerNum]
+                prop = self.board.properties[player.currPos]
+                print(prop)
+		self.detail_window = DetailView(prop, player, self)
+		self.detail_window.showFullScreen()
+		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayerUI)
 
 
 	def startGame(self):
@@ -386,7 +401,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			player = Player(x, 0, self.board.properties[0], self.menu_window.playerColors[x], self.menu_window.playerPieces[x])
 			self.players.append(player)
                 
-                self.spotImage.setStyleSheet("border-image: url('images/spotImages/1.png')")
+                self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/1.png')")
 		self.getNextPlayer()
 
 	def getNextPlayer(self):
@@ -406,9 +421,11 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
-		
-		self.spotText.setText("New Turn: Player {}".format(player.playerNumber))
-                self.spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
+		if player.numProperties == 0:
+                   self.spotText.setText("It's Player {}'s turn!\n\nRoll the dice to take your turn!".format(player.playerNumber)) 
+                else:
+                    self.spotText.setText("It's Player {}'s turn!\n\nYou may roll the dice or browse through your properties to upgrade them.".format(player.playerNumber))
+                self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
 		
 		self.updatePlayerUI()
 
@@ -432,9 +449,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_dice2Image.setText("")
 		self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
 		self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
-                self.spotImage.setVisible(True)
+                self.button_spotImage.setVisible(True)
                 # Update background
-                self.spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
+                self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
 		#self.spotText.setText("Hello World")
                 #self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
                 #self.spotText.setText("Player {} moved to Board Location {}: {} \n\n{}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos].name,self.board.properties[player.currPos].text))
@@ -476,7 +493,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				self.button_nextPlayer.setEnabled(True)
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 
-                        self.spotText.setText("Player {} moved to Board Location {}: \n{} \n\n{}.".format(player.playerNumber, player.currPos, currentPlace.getInfo(), self.board.properties[player.currPos].text))
+                        self.spotText.setText("You landed on {}! \n\n{} \n\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description))
 
 		elif currentPlace.owner != player:
 			print "Player Needs to pay Rent"
@@ -485,8 +502,16 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.button_nextPlayer.setText("Next Player")
 			self.button_playerAction.setEnabled(False)
 			self.button_nextPlayer.setEnabled(True)
-			
-			self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
+			print(currentPlace.rentText)
+			self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, currentPlace.rentText))
+
+			#self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
+
+                elif currentPlace.owner == player:
+                    self.button_nextPlayer.setText("Next Player")
+		    self.button_playerAction.setEnabled(False)
+		    self.button_nextPlayer.setEnabled(True)
+		    self.spotText.setText("You landed on {}! \n\n{} \n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
 
 		self.updatePlayerUI()
 
@@ -514,7 +539,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		
-		self.spotText.setText("Player {} moved to Board Location {}: \nCHANCE! \n\n{}.".format(player.playerNumber, player.currPos, self.board.chanceCards[i].text))
+		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}.".format(self.board.chanceCards[i].text))
 		
 		self.updatePlayerUI()
 		
@@ -527,7 +552,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
 		
-		self.spotText.setText("Player {} moved to Board Location {}: \nCOMMUNITY CHEST! \n\n{}.".format(player.playerNumber, player.currPos, self.board.communityChestCards[i].text))
+		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}.".format(player.playerNumber, player.currPos, self.board.communityChestCards[i].text))
 		
 		self.updatePlayerUI()
 
@@ -540,7 +565,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
 		
-		self.spotText.setText("Player {} moved to Board Location {}: \nBANKING! \n\n Player pays {} to the Bank.".format(player.playerNumber, player.currPos, -property.price))
+		self.spotText.setText("You landed on {}\n\n{}".format(property.name, property.description))
 		
 		self.updatePlayerUI()
 
@@ -559,14 +584,20 @@ class MainGame(QMainWindow, Ui_MainWindow):
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
                                 
-                                self.spotText.setText("Player {} moved to Board Location {}: \nBUS LOOP!\n{}\n{}\n\n{}".format(player.playerNumber, player.currPos, currentPlace.name, currentPlace.price, currentPlace.text))
-                                
+                                self.spotText.setText("You landed on {}! \n\n{} \n\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description))
+
 		elif currentPlace.owner != player:
 			print "Player must pay rent to railroad"
 			owner = currentPlace.owner
 			print(owner)
-                        self.spotText.setText("Player {} moved to Board Location {}: \nBUS LOOP!\n{}\nOwner: {}\n\n Player pays Bus Fare to Bus Owner.\n\n{}".format(player.playerNumber, player.currPos, currentPlace.name, currentPlace.owner, currentPlace.currentPlace.text))
-		
+                        self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, currentPlace.rentText))
+                
+                elif currentPlace.owner == player:
+                    self.button_nextPlayer.setText("Next Player")
+		    self.button_playerAction.setEnabled(False)
+		    self.button_nextPlayer.setEnabled(True)
+		    self.spotText.setText("You landed on {}! \n\n{} \n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
+
 		self.updatePlayerUI()
 
         def noopHandle(self, player):

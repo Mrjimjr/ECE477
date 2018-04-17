@@ -25,7 +25,8 @@ class Ui_detailView(object):
         self.propIcon.setText("")
         self.propIcon.setObjectName("propIcon")
         self.label_propText = QtGui.QLabel(self.frame)
-        self.label_propText.setGeometry(QtCore.QRect(60, 220, 421, 91))
+        self.label_propText.setGeometry(QtCore.QRect(40, 220, 421, 91))
+        self.label_propText.setWordWrap(True)
         self.label_propText.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propText.setObjectName("label_propText")
         self.button_closeDetail = QtGui.QPushButton(self.frame)
@@ -35,7 +36,7 @@ class Ui_detailView(object):
         self.button_closeDetail.setObjectName("button_closeDetail")
         self.button_upgrade = QtGui.QPushButton(self.frame)
         self.button_upgrade.setEnabled(True)
-        self.button_upgrade.setGeometry(QtCore.QRect(510, 240, 71, 81))
+        self.button_upgrade.setGeometry(QtCore.QRect(480, 250, 90, 70))
         self.button_upgrade.setAutoFillBackground(False)
         self.button_upgrade.setObjectName("button_upgrade")
         self.widget = QtGui.QWidget(self.frame)
@@ -54,30 +55,38 @@ class Ui_detailView(object):
         self.label_propName.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propName.setObjectName("label_propName")
         self.verticalLayout.addWidget(self.label_propName)
-        self.label_propCost = QtGui.QLabel(self.widget)
-        self.label_propCost.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.label_propCost.setObjectName("label_propCost")
-        self.verticalLayout.addWidget(self.label_propCost)
+        
         self.label_propOwner = QtGui.QLabel(self.widget)
         self.label_propOwner.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propOwner.setObjectName("label_propOwner")
         self.verticalLayout.addWidget(self.label_propOwner)
+        
+        
+        self.label_propCost = QtGui.QLabel(self.widget)
+        self.label_propCost.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_propCost.setObjectName("label_propCost")
+        self.verticalLayout.addWidget(self.label_propCost)
+
         self.label_propRent = QtGui.QLabel(self.widget)
         self.label_propRent.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propRent.setObjectName("label_propRent")
         self.verticalLayout.addWidget(self.label_propRent)
+        
         self.label_propUpCost = QtGui.QLabel(self.widget)
         self.label_propUpCost.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propUpCost.setObjectName("label_propUpCost")
         self.verticalLayout.addWidget(self.label_propUpCost)
+        
         self.label_propUpRent = QtGui.QLabel(self.widget)
         self.label_propUpRent.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propUpRent.setObjectName("label_propUpRent")
         self.verticalLayout.addWidget(self.label_propUpRent)
+        
         self.label_propUpText = QtGui.QLabel(self.widget)
         self.label_propUpText.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_propUpText.setObjectName("label_propUpText")
         self.verticalLayout.addWidget(self.label_propUpText)
+
 
         self.retranslateUi(detailView)
         QtCore.QMetaObject.connectSlotsByName(detailView)

@@ -12,7 +12,7 @@ RAILROADS = [5,15,25,35]
 
 class Property():
 	"""Represents one property"""
-	def __init__(self,position,name,action,price,rent,upRent,upCost,description,rentText):
+	def __init__(self,position,name,action,price,rent,upRent,upCost,description,rentText, upText):
 		self.position = int(position)
 		self.name = name
 		self.price = int(price)
@@ -25,6 +25,7 @@ class Property():
 		self.upgraded = False
 		self.description = description
 		self.rentText = rentText
+		self.upText = upText
 		self.image = "images/tiles/{}.png".format(self.position + 1)
 		
 		
@@ -74,7 +75,7 @@ class Board():
                 with open("Properties.tsv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines[1:]:
-                        line = line.split(",")
+                        line = line.split("\t")
                         position = line[0]
 			name = line[1]
 			action = line[2]
@@ -87,7 +88,8 @@ class Board():
 			upCost = line[6]
 			description = line[7]
 			rentText = line[8]
-			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,description,rentText))
+			upText = line[9]
+			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,description,rentText, upText))
 		with open("Cards - ChanceTest.csv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines:
