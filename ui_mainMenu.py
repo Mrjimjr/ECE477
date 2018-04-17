@@ -209,6 +209,10 @@ class Ui_mainMenu(object):
         self.button_startGame = QtGui.QPushButton(self.splitter)
         self.button_startGame.setEnabled(False)
         self.button_startGame.setObjectName("button_startGame")
+        self.button_resumeGame = QtGui.QPushButton(self.splitter)
+        self.button_resumeGame.setEnabled(False)
+        self.button_resumeGame.setVisible(False)
+        self.button_resumeGame.setObjectName("button_resumeGame")
         self.frame_piecePicker = QtGui.QFrame(mainMenu)
         self.frame_piecePicker.setGeometry(QtCore.QRect(290, 430, 951, 181))
         self.frame_piecePicker.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -327,6 +331,7 @@ class Ui_mainMenu(object):
         self.label_playersTitle_2.setText(QtGui.QApplication.translate("mainMenu", "Piece", None, QtGui.QApplication.UnicodeUTF8))
         self.label_colorPicker.setText(QtGui.QApplication.translate("mainMenu", "Pick Your Color", None, QtGui.QApplication.UnicodeUTF8))
         self.button_startGame.setText(QtGui.QApplication.translate("mainMenu", "Start Game", None, QtGui.QApplication.UnicodeUTF8))
+        #self.button_resumeGame.setText(QtGui.QApplication.translate("mainMenu", "Resume Game", None, QtGui.QApplication.UnicodeUTF8))
         self.label_colorPicker_2.setText(QtGui.QApplication.translate("mainMenu", "Pick Your Piece", None, QtGui.QApplication.UnicodeUTF8))
         self.button_createNewGame.setText(QtGui.QApplication.translate("mainMenu", "Create New Game", None, QtGui.QApplication.UnicodeUTF8))
 

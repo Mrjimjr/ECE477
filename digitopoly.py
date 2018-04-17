@@ -178,10 +178,11 @@ class MainMenu(QMainWindow, Ui_mainMenu):
 	"""docstring for MainMenu"""
 	def __init__(self, parent=None):
 		super(MainMenu, self).__init__(parent)
-		
+			    
 		self.setupUi(self)
 		self.button_startGame.clicked.connect(self.hide)
-
+                self.button_resumeGame.clicked.connect(self.hide)
+                
 		self.button_createNewGame.clicked.connect(self.createGame)
 		self.button_startGame.clicked.connect(lambda: self.button_addPlayer.setEnabled(False))
 		self.button_addPlayer.clicked.connect(self.addPlayer)
@@ -189,7 +190,11 @@ class MainMenu(QMainWindow, Ui_mainMenu):
 		self.frame_newPlayer.setVisible(False)
 		self.frame_colorPicker.setVisible(False)
 		self.frame_piecePicker.setVisible(False)
-
+		
+		self.playerColors = []
+		self.playerPieces = []
+		self.numPlayers = 0
+		
 		# Player Buttons
 		self.playerLabels = [self.label_player1, self.label_player2, self.label_player3, self.label_player4]
 		self.playerColorButtons = [self.button_player1Color, self.button_player2Color, self.button_player3Color, self.button_player4Color]
@@ -209,11 +214,6 @@ class MainMenu(QMainWindow, Ui_mainMenu):
 		self.playerPieceButtons[1].clicked.connect(lambda x = 1: self.piecePicker(x))
 		self.playerPieceButtons[2].clicked.connect(lambda x = 2: self.piecePicker(x))
 		self.playerPieceButtons[3].clicked.connect(lambda x = 3: self.piecePicker(x))
-
-		self.playerColors = []
-		self.playerPieces = []
-
-		self.numPlayers = 0
 
 		x = 0
 		for btn in self.colorPickerButtons:
@@ -274,6 +274,7 @@ class MainMenu(QMainWindow, Ui_mainMenu):
 		self.numPlayers = 0
 		self.button_addPlayer.setEnabled(True)
 		self.button_startGame.setEnabled(False)
+		self.button_resumeGame.setEnabled(True)
 
 		self.playerColors = []
 		self.playerPieces = []		
@@ -324,8 +325,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 
 		# Main Menu Signals
-		self.button_mainMenu.clicked.connect(self.mainMenu)
+		self.button_mainMenu.clicked.connect(self.pauseGame)
 		self.menu_window.button_startGame.clicked.connect(self.startGame)
+		
 		# self.button_startGame.clicked.connect
 
 
@@ -351,6 +353,12 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		reconnect(self.button_spotImage.clicked, self.propDetailOpen)
 
 		
+	def pauseGame(self):
+                self.menu_window.showFullScreen()
+                self.menu_window.button_startGame.setVisible(False)
+                self.menu_window.button_resumeGame.setText("Resume Game")
+                self.menu_window.button_resumeGame.setVisible(True)
+                
 	def mainMenu(self):
 		self.menu_window.showFullScreen()
 		
