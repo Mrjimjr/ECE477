@@ -12,7 +12,9 @@ class Player():
 		self.money = 500
 		self.properties = []
 		self.numProperties = 0
-		self.doublCount = 0
+		self.jailRolls = 0
+		self.inJail = False
+		self.outOfJail = False
 
 	def pay(self, amount):
 		self.money = self.money + amount
@@ -43,7 +45,7 @@ class Player():
 		if property is not Property:
 			print("Could not set current location on board in setLocation. Argument not of type Property")
 			
-                self.move(int(property.position))
+                self.currPos = int(property.position)
 
 	def move(self, num):
                 print(self.currPos)

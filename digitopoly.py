@@ -57,11 +57,15 @@ class DetailView(QMainWindow, Ui_detailView):
 
 		# Connect Buttons
 		reconnect(self.button_closeDetail.clicked, self.close)
-		if not (self.property.upgraded) and not (self.property.action == RAILROAD_SPACE) and (self.property.owner != None):
+		if not (self.property.upgraded):
 			reconnect(self.button_upgrade.clicked, self.upgrade)
 			self.button_upgrade.setEnabled(True)
+			self.button_upgrade.setVisible(True)
 		else:
 			self.button_upgrade.setEnabled(False)
+			self.button_upgrade.setVisible(True)
+		if (self.property.action == RAILROAD_SPACE) or (self.property.owner == None):
+                        self.button_upgrade.setVisible(False)
 
 
 	def updatePlayerUI(self):
@@ -327,6 +331,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		# Main Menu Signals
 		self.button_mainMenu.clicked.connect(self.pauseGame)
 		self.menu_window.button_startGame.clicked.connect(self.startGame)
+		self.menu_window.button_resumeGame.clicked.connect(self.updatePlayerInfo)
 		
 		# self.button_startGame.clicked.connect
 
@@ -354,6 +359,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 		
 	def pauseGame(self):
+                print(self.players[self.currPlayerNum].color)
                 self.menu_window.showFullScreen()
                 self.menu_window.button_startGame.setVisible(False)
                 self.menu_window.button_resumeGame.setText("Resume Game")
@@ -412,6 +418,12 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/1.png')")
 		self.getNextPlayer()
 
+        def updatePlayerInfo(self):
+                for x in range(0, self.menu_window.numPlayers):
+			self.players[x].color = self.menu_window.playerColors[x]
+			self.players[x].piece = self.menu_window.playerPieces[x]
+
+			
 	def getNextPlayer(self):
 		self.currPlayerNum = self.currPlayerNum + 1
 		if self.currPlayerNum == len(self.players):
@@ -445,25 +457,37 @@ class MainGame(QMainWindow, Ui_MainWindow):
 	def takeTurn(self):
 		player = self.players[self.currPlayerNum]
 		roll = player.roll()
-		# Add In double counts self.doublCount = 0
-		player.move(roll[0] + roll[1])
-		player.currPlace = self.board.properties[player.currPos]
-		print "Player {} moved to index {}.".format(player.playerNumber, player.currPos)
+		if player.inJail == True:
+                    		# Update Player UI after Move
+                    self.frame_diceResult.setVisible(True)
+                    self.button_dice1Image.setText("")
+                    self.button_dice1Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[0])))
+                    self.button_dice2Image.setText("")
+                    self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
+                    self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
+                    self.button_spotImage.setVisible(True)
+                    print("Player Location: {}\n".format(player.currPos))
+                    self.jailHandle(player, roll)
+                else:
+                    # Add In double counts self.doublCount = 0
+                    player.move(roll[0] + roll[1])
+                    player.currPlace = self.board.properties[player.currPos]
+                    print "Player {} moved to index {}.".format(player.playerNumber, player.currPos)
 
-		# Update Player UI after Move
-		self.frame_diceResult.setVisible(True)
-		self.button_dice1Image.setText("")
-		self.button_dice1Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[0])))
-		self.button_dice2Image.setText("")
-		self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
-		self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
-                self.button_spotImage.setVisible(True)
-                # Update background
-                self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
-		#self.spotText.setText("Hello World")
-                #self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
-                #self.spotText.setText("Player {} moved to Board Location {}: {} \n\n{}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos].name,self.board.properties[player.currPos].text))
-                #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
+                    # Update Player UI after Move
+                    self.frame_diceResult.setVisible(True)
+                    self.button_dice1Image.setText("")
+                    self.button_dice1Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[0])))
+                    self.button_dice2Image.setText("")
+                    self.button_dice2Image.setStyleSheet("border-image: url('images/dice/{}.png') 0 0 0 0 stretch stretch;".format(str(roll[1])))
+                    self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
+                    self.button_spotImage.setVisible(True)
+                    # Update background
+                    self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
+                    #self.spotText.setText("Hello World")
+                    #self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
+                    #self.spotText.setText("Player {} moved to Board Location {}: {} \n\n{}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos].name,self.board.properties[player.currPos].text))
+                    #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
 
                 self.updatePlayerUI()
 		
@@ -480,9 +504,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.railroadHandle(player)
 		elif player.currPlace.action == NOOP_SPACE:
                         self.noopHandle(player)
-		print roll
+                        
+		print("Roll: {}\n".format(roll))
 
-		print str(player)
 
 	def propertyHandle(self, player):
 		player = self.players[self.currPlayerNum]
@@ -560,13 +584,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
 		
-		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}.".format(player.playerNumber, player.currPos, self.board.communityChestCards[i].text))
+		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}.".format(self.board.communityChestCards[i].text))
 		
 		self.updatePlayerUI()
 
 	def bankHandle(self, player):
 		property = self.board.properties[player.currPos]
-		player.pay(property.price)
+		player.charge(property.price)
 		# Update UI
 		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
@@ -600,7 +624,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			print(owner)
                         self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, currentPlace.rentText))
                 
-                elif currentPlace.owner == player:
+                else:
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
@@ -609,7 +633,36 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.updatePlayerUI()
 
         def noopHandle(self, player):
-		  pass
+                property = self.board.properties[player.currPos]
+		self.button_playerAction.setEnabled(False)
+		self.button_nextPlayer.setEnabled(True)
+		if player.currPos == 30:
+                    print("gotoLab registered")
+                    player.inJail = True
+                    player.setLocation(self.board.properties[10])
+                if (player.jailRolls > 0):
+                    self.spotText.setText("You are in Jail! To get out of jail you must roll doubles or wait 3 turns.\n\nTurns in Jail: {}".format(player.jailRolls))
+                elif player.jailRolls == -1:
+                    self.spotText.setText("Congrats! You got out of Open Lab!")
+                    player.jailRolls = 0
+                else:
+                    self.spotText.setText("You landed on {}\n\n{}".format(property.name, property.description))
+            
+                    
+                    
+        def jailHandle(self, player, roll):
+                if player.jailRolls < 3:
+                    player.jailRolls += 1
+                else:
+                    player.inJail = False
+                    player.jailRolls = -1
+                if roll[0] == roll[1]:
+                    player.inJail = False
+                    player.jailRolls = -1
+                if player.outOfJail == True:
+                    player.inJail = False
+                    player.outOfJail = False
+                    player.jailRolls = -1
 
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles
