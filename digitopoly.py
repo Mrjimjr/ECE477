@@ -385,7 +385,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		for x in range(0, numPlayers):
 			player = Player(x, 0, self.board.properties[0], self.menu_window.playerColors[x], self.menu_window.playerPieces[x])
 			self.players.append(player)
-
+                
+                self.spotImage.setStyleSheet("border-image: url('images/spotImages/1.png')")
 		self.getNextPlayer()
 
 	def getNextPlayer(self):
@@ -405,6 +406,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
+		
+		self.spotText.setText("New Turn: Player {}".format(player.playerNumber))
+                self.spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
+		
 		self.updatePlayerUI()
 
 
@@ -429,10 +434,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.label_diceTotalImage.setText(str(roll[0] + roll[1]))
                 self.spotImage.setVisible(True)
                 # Update background
-                self.spotImage.setStyleSheet("background-image: url('{}') 0 0 0 0 stretch stretch;".format((self.board.properties[player.currPos]).spotImage))
+                self.spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
 		#self.spotText.setText("Hello World")
-                self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
-		self.updatePlayerUI()
+                #self.spotText.setText("Player {} moved to index {}: {}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos]))
+                #self.spotText.setText("Player {} moved to Board Location {}: {} \n\n{}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos].name,self.board.properties[player.currPos].text))
+                #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
+
+                self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
 			print str(player.currPlace)
@@ -445,8 +453,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.bankHandle(player)
 		elif player.currPlace.action == RAILROAD_SPACE:
 			self.railroadHandle(player)
-
-
+		elif player.currPlace.action == NOOP_SPACE:
+                        self.noopHandle(player)
 		print roll
 
 		print str(player)
@@ -467,6 +475,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				self.button_playerAction.setEnabled(False)
 				self.button_nextPlayer.setEnabled(True)
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+
+                        self.spotText.setText("Player {} moved to Board Location {}: \n{} \n\n{}.".format(player.playerNumber, player.currPos, currentPlace.getInfo(), self.board.properties[player.currPos].text))
 
 		elif currentPlace.owner != player:
 			print "Player Needs to pay Rent"
@@ -503,6 +513,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+		
+		self.spotText.setText("Player {} moved to Board Location {}: \nCHANCE! \n\n{}.".format(player.playerNumber, player.currPos, self.board.chanceCards[i].text))
+		
 		self.updatePlayerUI()
 		
 	def communityChestHandle(self, player):
@@ -513,6 +526,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
+		
+		self.spotText.setText("Player {} moved to Board Location {}: \nCOMMUNITY CHEST! \n\n{}.".format(player.playerNumber, player.currPos, self.board.communityChestCards[i].text))
+		
 		self.updatePlayerUI()
 
 	def bankHandle(self, player):
@@ -523,6 +539,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
+		
+		self.spotText.setText("Player {} moved to Board Location {}: \nBANKING! \n\n Player pays {} to the Bank.".format(player.playerNumber, player.currPos, -property.price))
+		
+		self.updatePlayerUI()
 
 
 	def railroadHandle(self, player):
@@ -538,15 +558,19 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				else:
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
+                                
+                                self.spotText.setText("Player {} moved to Board Location {}: \nBUS LOOP!\n{}\n{}\n\n{}".format(player.playerNumber, player.currPos, currentPlace.name, currentPlace.price, currentPlace.text))
+                                
 		elif currentPlace.owner != player:
 			print "Player must pay rent to railroad"
 			owner = currentPlace.owner
 			print(owner)
+                        self.spotText.setText("Player {} moved to Board Location {}: \nBUS LOOP!\n{}\nOwner: {}\n\n Player pays Bus Fare to Bus Owner.\n\n{}".format(player.playerNumber, player.currPos, currentPlace.name, currentPlace.owner, currentPlace.currentPlace.text))
 		
 		self.updatePlayerUI()
 
-
-			  
+        def noopHandle(self, player):
+		  pass
 
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles

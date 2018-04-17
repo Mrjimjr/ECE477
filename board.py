@@ -12,7 +12,7 @@ RAILROADS = [5,15,25,35]
 
 class Property():
 	"""Represents one property"""
-	def __init__(self,position,name,action,price,rent,upRent,upCost,text,upText):
+	def __init__(self,position,name,action,price,rent,upRent,upCost,description,rentText):
 		self.position = int(position)
 		self.name = name
 		self.price = int(price)
@@ -23,10 +23,10 @@ class Property():
 		except:
 			pass			
 		self.upgraded = False
-		self.text = text
-		self.upText = upText
+		self.description = description
+		self.rentText = rentText
 		self.image = "images/tiles/{}.png".format(self.position + 1)
-		self.spotImage = "images/spotImages/{}.png".format(self.position + 1)
+		
 		
 		if action == "0":
 			self.action = PROPERTY_SPACE
@@ -54,7 +54,7 @@ class Property():
 			print("Could not add owner to property in setOwner. Argument not of type Player")
 
 	def getInfo(self):
-		return """Name: {}\nPrice{}\nRent:{}""".format(self.name, self.price, self.rent)
+		return """Name: {}\nPrice: {}\nRent: {}""".format(self.name, self.price, self.rent)
 
 	def __str__(self):
 		return """Name: {}\nPrice: {}\nRent: {}\nOwner: {}\nAction: {}
@@ -71,7 +71,7 @@ class Board():
 		self.properties = []
 		self.chanceCards = []
 		self.communityChestCards = []
-                with open("Properties.csv","r") as myFile:
+                with open("Properties.tsv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines[1:]:
                         line = line.split(",")
@@ -85,9 +85,9 @@ class Board():
 			rent = line[4]
 			upRent = line[5]
 			upCost = line[6]
-			text = line[7]
-			upText = line[8]
-			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,text,upText))
+			description = line[7]
+			rentText = line[8]
+			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,description,rentText))
 		with open("Cards - ChanceTest.csv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines:
