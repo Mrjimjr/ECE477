@@ -430,6 +430,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.currPlayerNum = 0
 		# Update UI
 		self.button_nextPlayer.setEnabled(False)
+		self.button_spotImage.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		self.button_playerAction.setEnabled(True)
@@ -493,16 +494,21 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		
 		if player.currPlace.action == PROPERTY_SPACE:
 			print str(player.currPlace)
+                        self.button_spotImage.setEnabled(True)
 			self.propertyHandle(player)
 		elif player.currPlace.action == CHANCE_SPACE:
 			self.chanceHandle(player)
+			self.button_spotImage.setEnabled(False)
 		elif player.currPlace.action == COMMUNITY_CHEST_SPACE:
 			self.communityChestHandle(player)
+			self.button_spotImage.setEnabled(False)
 		elif player.currPlace.action == BANK_SPACE:
 			self.bankHandle(player)
 		elif player.currPlace.action == RAILROAD_SPACE:
+                        self.button_spotImage.setEnabled(True)
 			self.railroadHandle(player)
 		elif player.currPlace.action == NOOP_SPACE:
+                        self.button_spotImage.setEnabled(False)
                         self.noopHandle(player)
                         
 		print("Roll: {}\n".format(roll))
