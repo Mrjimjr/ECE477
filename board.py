@@ -90,30 +90,35 @@ class Board():
 			rentText = line[8]
 			upText = line[9]
 			self.properties.append(Property(position,name,action,price,rent,upRent,upCost,description,rentText, upText))
-		with open("Cards - ChanceTest.csv","r") as myFile:
+		with open("Cards - ChanceTest.tsv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines:
-                        line = line.split(",")
+                        line = line.split("\t")
                         text = line[0]
 			location = line[1]
-			self.chanceCards.append(ChanceCards(text,location))
-		with open("Cards - CommunityChest Test.csv","r") as myFile:
+			description = line[2]
+			
+			self.chanceCards.append(ChanceCards(text,location, description))
+		with open("Cards - CommunityChest Test.tsv","r") as myFile:
                         lines = myFile.readlines()
                 for line in lines:
-                        line = line.split(",")
+                        line = line.split("\t")
                         text = line[0]
 			amount = line[1]
-			self.communityChestCards.append(CommunityChestCards(text,amount))
+			description = line[2]
+			self.communityChestCards.append(CommunityChestCards(text,amount, description))
 
 
 class ChanceCards():
-        def __init__(self, text, location):
+        def __init__(self, text, location, description):
                 self.text = text
                 self.location = location
+                self.description = description
 class CommunityChestCards():
-        def __init__(self, text, amount):
+        def __init__(self, text, amount, description):
                 self.text = text
                 self.amount = amount
+                self.description = description
                 
 if __name__ == "__main__":
         board = Board()

@@ -577,7 +577,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		
-		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}.".format(self.board.chanceCards[i].text))
+		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n{}.".format(card.text, card.description))
 		
 		self.updatePlayerUI()
 		
@@ -590,7 +590,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
 		
-		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}.".format(self.board.communityChestCards[i].text))
+		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}\n{}.".format(card.text, card.description))
 		
 		self.updatePlayerUI()
 
