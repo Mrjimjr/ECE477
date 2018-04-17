@@ -114,6 +114,7 @@ class ChanceCards():
                 self.text = text
                 self.location = location
                 self.description = description
+                
 class CommunityChestCards():
         def __init__(self, text, amount, description):
                 self.text = text

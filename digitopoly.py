@@ -531,7 +531,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				self.button_nextPlayer.setEnabled(True)
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 
-                        self.spotText.setText("You landed on {}! \n\n{} \n\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description))
+                        self.spotText.setText("You landed on {}! \n\n{} \n\nPrice to Buy: ${}.00\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description, currentPlace.price))
 
 		elif currentPlace.owner != player:
 			print "Player Needs to pay Rent"
@@ -541,7 +541,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.button_playerAction.setEnabled(False)
 			self.button_nextPlayer.setEnabled(True)
 			print(currentPlace.rentText)
-			self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, currentPlace.rentText))
+			newRentText = str(currentPlace.rentText).format(currentPlace.rent)
+			self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, newRentText))
 
 			#self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
 
@@ -577,7 +578,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setEnabled(True)
 		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		
-		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n{}.".format(card.text, card.description))
+		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
 		
 		self.updatePlayerUI()
 		
@@ -590,7 +591,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
 		
-		self.spotText.setText("You landed on Community Chest!n\nYour card says:\n{}\n{}.".format(card.text, card.description))
+		self.spotText.setText("You landed on Community Chest!\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
 		
 		self.updatePlayerUI()
 
@@ -634,7 +635,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
-		    self.spotText.setText("You landed on {}! \n\n{} \n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
+		    self.spotText.setText("You landed on {}! \n\n{}\n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
 
 		self.updatePlayerUI()
 
