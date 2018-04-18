@@ -443,7 +443,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
 		if player.numProperties == 0:
-                   self.spotText.setText("It's Player {}'s turn!\n\nRoll the dice to take your turn!".format(player.playerNumber)) 
+                    self.spotText.setText("It's Player {}'s turn!\n\nRoll the dice to take your turn!".format(player.playerNumber)) 
                 else:
                     self.spotText.setText("It's Player {}'s turn!\n\nYou may roll the dice or browse through your properties to upgrade them.".format(player.playerNumber))
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
@@ -574,14 +574,39 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
 		player.setLocation(self.board.properties[int(card.location)])
-		self.button_playerAction.setEnabled(False)
-		self.button_nextPlayer.setEnabled(True)
-		reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
-		
+		self.button_playerAction.setEnabled(True)
+		self.button_nextPlayer.setEnabled(False)
+		#reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+		self.button_playerAction.setText("Advance")
 		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
-		
 		self.updatePlayerUI()
+		reconnect(self.button_playerAction.clicked, (lambda: self.takeAction(player)))
 		
+		
+
+		
+		
+                
+        def takeAction(self, player):
+                if player.currPlace.action == PROPERTY_SPACE:
+                        print str(player.currPlace)
+                        self.button_spotImage.setEnabled(True)
+                        self.propertyHandle(player)
+                elif player.currPlace.action == CHANCE_SPACE:
+                        self.chanceHandle(player)
+                        self.button_spotImage.setEnabled(False)
+                elif player.currPlace.action == COMMUNITY_CHEST_SPACE:
+                        self.communityChestHandle(player)
+                        self.button_spotImage.setEnabled(False)
+                elif player.currPlace.action == BANK_SPACE:
+                        self.bankHandle(player)
+                elif player.currPlace.action == RAILROAD_SPACE:
+                        self.button_spotImage.setEnabled(True)
+                        self.railroadHandle(player)
+                elif player.currPlace.action == NOOP_SPACE:
+                        self.button_spotImage.setEnabled(False)
+                        self.noopHandle(player)
+                        
 	def communityChestHandle(self, player):
 		i = random.randint(0,len(self.board.communityChestCards)-1)
 		card = self.board.communityChestCards[i]
@@ -629,7 +654,15 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			print "Player must pay rent to railroad"
 			owner = currentPlace.owner
 			print(owner)
-                        self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, currentPlace.rentText))
+			currentPlace.rent = float(25.0/2.0)
+			for property in owner.properties:
+                            if property.action == RAILROAD_SPACE:
+                                currentPlace.rent = float(currentPlace.rent * 2.0)
+                        newRentText = (currentPlace.rentText).format(int(currentPlace.rent))
+                        self.button_nextPlayer.setText("Next Player")
+                        self.button_playerAction.setEnabled(False)
+                        self.button_nextPlayer.setEnabled(True)
+                        self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, newRentText))
                 
                 else:
                     self.button_nextPlayer.setText("Next Player")

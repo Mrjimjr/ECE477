@@ -53,6 +53,7 @@ class Player():
 			self.currPos = self.currPos + num
 		else:
 			self.currPos = (num - (NUM_SPACES - self.currPos))
+			self.pay(200)
 
 	# def takeTurn(self):
 	# 	roll = self.roll()
