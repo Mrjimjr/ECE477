@@ -80,17 +80,17 @@ class DetailView(QMainWindow, Ui_detailView):
 		prop = self.property
 		self.propIcon.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
 		self.label_propName.setText(str(prop.name))
-		print prop.name
+		#print prop.name
 		self.label_propCost.setText("Cost to Buy: ${}.00".format(prop.price))
-		print prop.price
+		#print prop.price
 		self.label_propText.setText(str(prop.upText))
-		print prop.upText
+		#print prop.upText
 		self.label_propRent.setText("Cost to Visit: ${}.00".format(prop.rent))
-		print prop.rent
+		#print prop.rent
 		self.label_propUpCost.setText("Cost to Upgrade: ${}.00".format(prop.upCost))
-		print prop.upCost
+		#print prop.upCost
 		self.label_propUpRent.setText("Cost to Visit after Upgrade: ${}.00".format(prop.upRent))
-		print prop.upRent
+		#print prop.upRent
 		self.label_propUpText.setText("")
 		#print prop.upText
 		try:
@@ -157,20 +157,15 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 		for prop in props:
 			if prop.action == RAILROAD_SPACE:
 				btn = self.rrButtons[rrCnt]
-				
-				btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
-				btn.setText(prop.name)
-				btn.setEnabled(True)
-				reconnect(btn.clicked, (lambda: self.propDetailOpen(prop, player)))
 				rrCnt = rrCnt + 1
 			else:
 				btn = self.propButtons[btnCnt]
-				
-				btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
-				btn.setText(prop.name)
-				btn.setEnabled(True)
-				reconnect(btn.clicked, (lambda: self.propDetailOpen(prop, player)))
 				btnCnt = btnCnt + 1
+			btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
+			btn.setText(prop.name)
+                        btn.setEnabled(True)
+                        reconnect(btn.clicked, (lambda property=prop: self.propDetailOpen(property, player)))
+                
 
 
 	def propDetailOpen(self, prop, player):
@@ -383,7 +378,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 	def openPropertyViewer(self):
 		player = self.players[self.currPlayerNum]
-		print "Request to open Property Viewer from Player " + str(player)
+		#print "Request to open Property Viewer from Player " + str(player)
 		self.property_window = PropertyViewer(player, self)
 		self.property_window.showFullScreen()
 		self.property_window.button_closeProperties.clicked.connect(self.updatePlayerUI)
@@ -573,7 +568,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		i = random.randint(0,len(self.board.chanceCards)-1)
 		card = self.board.chanceCards[i]
 		#self.button_playerAction.setText(card.text)
-		player.setLocation(self.board.properties[int(card.location)])
+		#player.setLocation(self.board.properties[int(card.location)])
+		player.currPos = int(card.location)
+                player.currPlace = self.board.properties[player.currPos]
+                print("currPlace for chance {} Curr Pos for chance{}\n".format(player.currPlace.position, player.currPos))
 		self.button_playerAction.setEnabled(True)
 		self.button_nextPlayer.setEnabled(False)
 		#reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
@@ -581,13 +579,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
 		self.updatePlayerUI()
 		reconnect(self.button_playerAction.clicked, (lambda: self.takeAction(player)))
-		
-		
-
-		
-		
+	
                 
         def takeAction(self, player):
+                self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
                 if player.currPlace.action == PROPERTY_SPACE:
                         print str(player.currPlace)
                         self.button_spotImage.setEnabled(True)

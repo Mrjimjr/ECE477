@@ -42,8 +42,8 @@ class Player():
 		return [randrange(1, 6), randrange(1, 6)]
 
 	def setLocation(self, property):
-		if property is not Property:
-			print("Could not set current location on board in setLocation. Argument not of type Property")
+		#if property is not Property:
+		#	print("Could not set current location on board in setLocation. Argument not of type Property")
 			
                 self.currPos = int(property.position)
 
@@ -54,6 +54,7 @@ class Player():
 		else:
 			self.currPos = (num - (NUM_SPACES - self.currPos))
 			self.pay(200)
+			print("Player {} has Passed GO\n".format(self.playerNumber))
 
 	# def takeTurn(self):
 	# 	roll = self.roll()
