@@ -15,6 +15,7 @@ class Player():
 		self.jailRolls = 0
 		self.inJail = False
 		self.outOfJail = False
+		
 
 	def pay(self, amount):
 		self.money = self.money + amount

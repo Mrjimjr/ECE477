@@ -25,7 +25,10 @@ COLOR_PRESETS_RGB = ["rgb(255,0,0)", "rgb(255,90,0)", "rgb(255,255,0)", "rgb(0,2
 COLOR_PRESETS_GRB = set(["grb(0,255,0)", "grb(90,255,0)", "grb(255,255,0)", "grb(255,0,0)", "grb(255,0,255)", "grb(0,0,255)", "grb(0,120,255)", "grb(0,255,191)"])
 # Player Pieces
 PLAYER_PIECES = ["images/pieces/1.png", "images/pieces/2.png", "images/pieces/3.png", "images/pieces/4.png", "images/pieces/5.png", "images/pieces/6.png", "images/pieces/7.png", "images/pieces/8.png"]
-
+# RGB Color Array
+RGB_COLOR = []
+# RGB Mode Array
+RGB_MODE = []
 class DetailView(QMainWindow, Ui_detailView):
 	"""This is the Property Viewer Object"""
 	def __init__(self, property, player, parent=None):
@@ -75,7 +78,8 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.button_closeDetail.setEnabled(True)
 		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
 		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
-
+                
+                
 	def displayDetail(self):
 		prop = self.property
 		self.propIcon.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
@@ -171,7 +175,7 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 	def propDetailOpen(self, prop, player):
 		self.detail_window = DetailView(prop, player, self)
 		self.detail_window.showFullScreen()
-		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayerUI)
+		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayem,rUI)
 
 class MainMenu(QMainWindow, Ui_mainMenu):
 	"""docstring for MainMenu"""
@@ -243,6 +247,7 @@ class MainMenu(QMainWindow, Ui_mainMenu):
 		color = COLOR_PRESETS_RGB[colorNum]		
 		self.colors.remove(color)
 		self.playerColors[playerNum] = color
+		
 		self.playerColorButtons[playerNum].setStyleSheet("background-color:{};".format(color))
 
 	def piecePicker(self, playerNum):
@@ -335,6 +340,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.players = []
 		self.currPlayerNum = -1
 		self.board = None
+		
+		for i in range(49):
+                    RGB_COLOR.append("grb(0,0,0)")
+                    RGB_MODE.append(0)
+                print(len(RGB_COLOR))
+                            
+                self.roation = 0
 
 		# Property UI
 		self.property_window = None
@@ -369,7 +381,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.label_playerInfo.setText(player.dispStr()[0])
 		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
 		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
-		# self.button_button_playerPieceInd.
+
 
 		if len(player.properties) > 0:
 			self.button_showProperties.setEnabled(True)
@@ -423,6 +435,21 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.currPlayerNum = self.currPlayerNum + 1
 		if self.currPlayerNum == len(self.players):
 			self.currPlayerNum = 0
+		
+			
+
+                #self.UpdateOrientation()
+		
+		try:
+                    blinkingIndex = RGB_MODE.index(2)
+                    print("blinking: ", blinkingIndex)
+                    RGB_MODE[blinkingIndex] = 0
+                    RGB_COLOR[blinkingIndex] = "grb(0,0,0)"
+                except:
+                    pass
+		
+		print(RGB_COLOR)
+		print(RGB_MODE)
 		# Update UI
 		self.button_nextPlayer.setEnabled(False)
 		self.button_spotImage.setEnabled(False)
@@ -434,7 +461,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.frame_diceResult.setVisible(False)
 		
 
-
+		# self.button_button_playerPieceInd.
+                
+                    
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
 		if player.numProperties == 0:
@@ -442,10 +471,72 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 else:
                     self.spotText.setText("It's Player {}'s turn!\n\nYou may roll the dice or browse through your properties to upgrade them.".format(player.playerNumber))
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
-		
+		print("Color:", player.color)
 		self.updatePlayerUI()
 
 
+        def UpdateOrientation(self):
+            
+            if self.currPlayerNum == 0:
+                self.roation = 0
+                self.button_playerAction.setGeometry(QRect(740, 590, 241, 71))
+                self.button_nextPlayer.setGeometry(QRect(980, 590, 241, 71))
+                self.frame_currentPlayerInfo.setGeometry(QRect(0, 0, 1280, 720))
+                self.button_mainMenu.setGeometry(QRect(1140, 10, 121, 31))
+                self.frame_playerInfo.setGeometry(QRect(10, 10, 471, 141))
+                self.label_currPlayerName.setGeometry(QRect(10, 10, 171, 17))
+                self.label_playerInfo.setGeometry(QRect(10, 30, 271, 101))
+                self.button_showProperties.setGeometry(QRect(290, 80, 161, 51))
+                self.button_playerColorInd.setGeometry(QRect(290, 10, 71, 61))
+                self.button_button_playerPieceInd.setGeometry(QRect(370, 10, 71, 61))
+                self.frame_diceResult.setGeometry(QRect(740, 460, 481, 121))
+                self.label_diceTitle.setGeometry(QRect(10, 10, 91, 17))
+                self.label_Dice1.setGeometry(QRect(110, 100, 66, 17))
+                self.label_Dice2.setGeometry(QRect(230, 100, 66, 17))
+                self.label_diceTotal.setGeometry(QRect(360, 100, 66, 17))
+                self.label_diceTotalImage.setGeometry(QRect(350, 10, 81, 71))
+                self.button_dice1Image.setGeometry(QRect(100, 10, 81, 81))
+                self.button_dice2Image.setGeometry(QRect(220, 10, 81, 81))
+                self.button_spotImage.setGeometry(QRect(120, 225, 430, 380))
+                self.spotText.setGeometry(QRect(685, 80, 520, 320))
+            elif self.currPlayerNum== 1:
+                self.rotation = 1
+                
+                self.button_playerAction.setGeometry(QRect(1175, 255, 71, 241))
+                self.button_nextPlayer.setGeometry(QRect(1175, 10, 71, 241))
+                #self.frame_currentPlayerInfo.setGeometry(QRect(0, 580, 120, 428))
+                self.button_mainMenu.setGeometry(QRect(10, 10, 31, 121))
+                self.frame_playerInfo.setGeometry(QRect(10, 190, 141, 471))
+                self.label_currPlayerName.setGeometry(QRect(10, 200, 20, 265))
+                self.label_currPlayerName.setStyleSheet("background-color: rgb(0, 255, 255)")
+                self.label_playerInfo.setGeometry(QRect(35, 200, 95, 265))
+                self.label_playerInfo.setStyleSheet("background-color: rgb(255, 0, 255)")
+                self.button_showProperties.setGeometry(QRect(80, 25, 51, 161))
+                self.button_playerColorInd.setGeometry(QRect(10, 110, 61, 71))
+                self.button_button_playerPieceInd.setGeometry(QRect(10, 30, 61, 71))
+                self.frame_diceResult.setGeometry(QRect(1040, 10, 121, 481))
+                self.label_diceTitle.setGeometry(QRect(10, 385, 17, 91))
+                self.label_diceTitle.setStyleSheet("background-color: rgb(0, 255, 255)")
+                self.label_Dice1.setGeometry(QRect(100, 180, 17, 66))
+                self.label_Dice1.setStyleSheet("background-color: rgb(255, 0, 255)")
+                self.label_Dice2.setGeometry(QRect(100, 280, 17, 66))
+                self.label_Dice2.setStyleSheet("background-color: rgb(255, 0, 255)")
+                self.label_diceTotal.setGeometry(QRect(100, 75, 17, 66))
+                self.label_diceTotal.setStyleSheet("background-color: rgb(255, 0, 255)")
+                self.label_diceTotalImage.setGeometry(QRect(10, 70, 71, 81))
+                self.label_diceTotalImage.setStyleSheet("background-color: rgb(255, 255, 0)")
+                self.button_dice1Image.setGeometry(QRect(10, 180, 81, 81))
+                self.button_dice2Image.setGeometry(QRect(10, 280, 81, 81))
+                self.button_spotImage.setGeometry(QRect(225, 245, 380, 430))
+                self.button_spotImage.setStyleSheet("background-color: rgb(255, 0, 255)")
+                self.spotText.setGeometry(QRect(665, 70, 320, 520))
+                self.spotText.setStyleSheet("background-color: rgb(0, 255, 255)")
+            elif self.currPlayerNum == 2:
+                self.button_playerAction.setGeometry(QRect(10, 10, 241, 71))
+            else:
+                self.button_playerAction.setGeometry(QRect(10, 590, 241, 71))
+                    
+                    
 	def returnToMain(self):
 		self.setupUi(self)
 		self.connect_setupUi()
@@ -469,7 +560,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     player.move(roll[0] + roll[1])
                     player.currPlace = self.board.properties[player.currPos]
                     print "Player {} moved to index {}.".format(player.playerNumber, player.currPos)
-
+		
                     # Update Player UI after Move
                     self.frame_diceResult.setVisible(True)
                     self.button_dice1Image.setText("")
@@ -485,6 +576,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     #self.spotText.setText("Player {} moved to Board Location {}: {} \n\n{}.".format(player.playerNumber, player.currPos, self.board.properties[player.currPos].name,self.board.properties[player.currPos].text))
                     #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
 
+                RGBindex = COLOR_PRESETS_RGB.index(player.color)
+                RGB_COLOR[player.currPos] = COLOR_PRESETS_RGB[RGBindex]
+                RGB_MODE[player.currPos] = 2
                 self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
@@ -549,13 +643,17 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
 		self.updatePlayerUI()
 
-
+        
 	def buyProperty(self, player, currentPlace):
 		print "Player {} buying {}".format(str(player.playerNumber), str(currentPlace.name))
 		currentPlace.owner = player
 		player.properties.append(currentPlace)
 		player.numProperties = player.numProperties + 1
 		player.charge(currentPlace.price)
+		RGBindex = COLOR_PRESETS_RGB.index(player.color)
+		print("index", RGBindex)
+		RGB_COLOR[currentPlace.position] = COLOR_PRESETS_RGB[RGBindex]
+		RGB_MODE[currentPlace.position] = 1
 
 		# Update UI
 		self.updatePlayerUI()
@@ -698,7 +796,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     player.inJail = False
                     player.outOfJail = False
                     player.jailRolls = -1
-
+                    
 
 # Helper Function for Disconnecting and Reconnecting Signal Handles
 def reconnect(signal, newhandler=None, oldhandler=None):

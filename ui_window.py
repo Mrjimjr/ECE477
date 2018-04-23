@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.button_newGame.setGeometry(QtCore.QRect(410, 340, 241, 71))
         self.button_newGame.setObjectName("button_newGame")
         self.frame_currentPlayerInfo = QtGui.QFrame(self.centralwidget)
-        self.frame_currentPlayerInfo.setGeometry(QtCore.QRect(-40, 0, 1280, 720))
+        self.frame_currentPlayerInfo.setGeometry(QtCore.QRect(0, 0, 1280, 720))
         self.frame_currentPlayerInfo.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_currentPlayerInfo.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_currentPlayerInfo.setObjectName("frame_currentPlayerInfo")

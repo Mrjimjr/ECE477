@@ -13,6 +13,13 @@ class Ui_mainMenu(object):
     def setupUi(self, mainMenu):
         mainMenu.setObjectName("mainMenu")
         mainMenu.resize(1280, 727)
+        self.frame_gold = QtGui.QFrame(mainMenu)
+        self.frame_gold.setGeometry(QtCore.QRect(0, 0, 275, 1000))
+        self.frame_gold.setStyleSheet("background-color: rgb(202, 186, 12)")
+        self.frame_black = QtGui.QFrame(mainMenu)
+        self.frame_black.lower()
+        self.frame_black.setGeometry(QtCore.QRect(275, 0, 1000, 1000))
+        self.frame_black.setStyleSheet("background-color: rgb(0, 0, 0)")
         self.frame_newPlayer = QtGui.QFrame(mainMenu)
         self.frame_newPlayer.setGeometry(QtCore.QRect(290, 90, 461, 331))
         self.frame_newPlayer.setFrameShape(QtGui.QFrame.StyledPanel)
