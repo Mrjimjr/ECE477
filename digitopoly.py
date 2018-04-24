@@ -414,7 +414,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.frame_boardImage.setStyleSheet("")
                 self.frame_black.setStyleSheet("")
                 self.frame_gold.setStyleSheet("")
-
+                
 		self.board = Board()
 		self.players = []
 
@@ -469,10 +469,15 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
+		currentPlace = self.board.properties[player.currPos]
 		if player.numProperties == 0:
-                    self.spotText.setText("It's Player {}'s turn!\n\nRoll the dice to take your turn!".format(player.playerNumber)) 
+                    self.locationName.setText("{}".format(currentPlace.name))
+                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber))
+                    self.actionText.setText("Roll the dice to take your turn!")
                 else:
-                    self.spotText.setText("It's Player {}'s turn!\n\nYou may roll the dice or browse through your properties to upgrade them.".format(player.playerNumber))
+                    self.locationName.setText("{}".format(currentPlace.name))
+                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber))
+                    self.actionText.setText("You may roll the dice or browse through your properties to upgrade them.")
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
 		print("Color:", player.color)
 		self.updatePlayerUI()
@@ -682,8 +687,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		#reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		self.button_playerAction.setText("Advance")
 		self.locationName.setText("Chance!")
-		self.spotText.setText("Your card says:\n{}\n\n{}.".format(card.text, card.description))
-		self.actionText.setText("")
+		self.spotText.setStyleSheet("background-color: rgb(244, 163, 0)")
+		self.spotText.setText("{}".format(card.description))
+		self.actionText.setText("{}".format(card.text))
 		self.updatePlayerUI()
 		reconnect(self.button_playerAction.clicked, (lambda: self.takeAction(player)))
 	
@@ -749,6 +755,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				else:
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
+						self.button_nextPlayer.setEnabled(True)
                                 self.locationName.setText("{}".format(currentPlace.name))
                                 self.spotText.setText("{}".format(currentPlace.description))
                                 self.actionText.setText("Price to Buy: $200.00\nClick the image for more information about buying this property!")

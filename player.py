@@ -21,9 +21,6 @@ class Player():
 		self.money = self.money + amount
 
 	def charge(self, amount):
-		if self.money - amount < 0:
-			raise(Exception("Player" + str(self.playerNumber) +" has no more money."))
-			
 		self.money = self.money - amount
 
 	def addProperty(self, property):
