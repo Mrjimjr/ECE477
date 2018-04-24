@@ -334,7 +334,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.menu_window.button_resumeGame.clicked.connect(self.updatePlayerInfo)
 		
 		# self.button_startGame.clicked.connect
-
+                
 
 		# Vars
 		self.players = []
@@ -411,6 +411,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.frame_currentPlayerInfo.setVisible(False)
 		self.button_newGame.setVisible(False)
 		self.frame_currentPlayerInfo.setVisible(True)
+		self.frame_boardImage.setStyleSheet("")
+                self.frame_black.setStyleSheet("")
+                self.frame_gold.setStyleSheet("")
 
 		self.board = Board()
 		self.players = []
@@ -619,8 +622,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				self.button_playerAction.setEnabled(False)
 				self.button_nextPlayer.setEnabled(True)
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
-
-                        self.spotText.setText("You landed on {}! \n\n{} \n\nPrice to Buy: ${}.00\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description, currentPlace.price))
+                        self.locationName.setText("{}".format(currentPlace.name))
+                        self.spotText.setText("{}".format(currentPlace.description))
+                        self.actionText.setText("Price to Buy: ${}.00\nClick the image for more information about buying this property!".format(currentPlace.price))
 
 		elif currentPlace.owner != player:
 			print "Player Needs to pay Rent"
@@ -630,8 +634,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.button_playerAction.setEnabled(False)
 			self.button_nextPlayer.setEnabled(True)
 			print(currentPlace.rentText)
-			newRentText = str(currentPlace.rentText).format(currentPlace.rent)
-			self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, newRentText))
+			newRentText = str(currentPlace.rentText.format(currentPlace.rent))
+			self.locationName.setText("{}".format(currentPlace.name))
+			self.spotText.setText("{}".format(currentPlace.description))
+			self.actionSpot.setText("{}".format(newRentText))
 
 			#self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
 
@@ -639,8 +645,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
-		    self.spotText.setText("You landed on {}! \n\n{} \n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
-
+		    self.locationName.setText("{}".format(currentPlace.name))
+		    self.spotText.setText("{}".format(currentPlace.description))
+                    self.actionText.setText("You already own this property!")
 		self.updatePlayerUI()
 
         
@@ -674,7 +681,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_nextPlayer.setEnabled(False)
 		#reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		self.button_playerAction.setText("Advance")
-		self.spotText.setText("You landed on Chance\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
+		self.locationName.setText("Chance!")
+		self.spotText.setText("Your card says:\n{}\n\n{}.".format(card.text, card.description))
+		self.actionText.setText("")
 		self.updatePlayerUI()
 		reconnect(self.button_playerAction.clicked, (lambda: self.takeAction(player)))
 	
@@ -708,9 +717,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
-		
-		self.spotText.setText("You landed on Community Chest!\n\nYour card says:\n{}\n\n{}.".format(card.text, card.description))
-		
+		self.locationName.setText("Community Chest!")
+		self.spotText.setText("Your card says:\n{}\n\n{}.".format(card.text, card.description))
+		self.actionText.setText("")
 		self.updatePlayerUI()
 
 	def bankHandle(self, player):
@@ -721,9 +730,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
-		
-		self.spotText.setText("You landed on {}\n\n{}".format(property.name, property.description))
-		
+		self.locationName.setText("{}".format(property.name))
+		self.spotText.setText("{}".format(property.description))
+		self.actionText.setText("")
 		self.updatePlayerUI()
 
 
@@ -740,8 +749,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				else:
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
-                                
-                                self.spotText.setText("You landed on {}! \n\n{} \n\nClick the image for more information on buying this property!".format(currentPlace.name, currentPlace.description))
+                                self.locationName.setText("{}".format(currentPlace.name))
+                                self.spotText.setText("{}".format(currentPlace.description))
+                                self.actionText.setText("Price to Buy: $200.00\nClick the image for more information about buying this property!")
+
 
 		elif currentPlace.owner != player:
 			print "Player must pay rent to railroad"
@@ -755,14 +766,16 @@ class MainGame(QMainWindow, Ui_MainWindow):
                         self.button_nextPlayer.setText("Next Player")
                         self.button_playerAction.setEnabled(False)
                         self.button_nextPlayer.setEnabled(True)
-                        self.spotText.setText("You landed on {}! \n\n{} \n\n{}".format(currentPlace.name, currentPlace.description, newRentText))
-                
+                        self.locationName.setText("{}".format(currentPlace.name))
+                        self.spotText.setText("{}".format(currentPlace.description))
+                        self.actionText.setText("{}".format(newRentText))
                 else:
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
-		    self.spotText.setText("You landed on {}! \n\n{}\n\nYou already own this property!".format(currentPlace.name, currentPlace.description))
-
+		    self.locationName.setText("{}".format(currentPlace.name))
+		    self.spotText.setText("{}".format(currentPlace.description))
+                    self.actionText.setText("You already own this property!")
 		self.updatePlayerUI()
 
         def noopHandle(self, player):
@@ -774,12 +787,17 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     player.inJail = True
                     player.setLocation(self.board.properties[10])
                 if (player.jailRolls > 0):
-                    self.spotText.setText("You are in Jail! To get out of jail you must roll doubles or wait 3 turns.\n\nTurns in Jail: {}".format(player.jailRolls))
+                    self.spotText.setText("You are in Open Lab! \n\nTurns in Open Lab: {}".format(player.jailRolls))
+                    self.actionText.setText("To get out of jail you must roll doubles or wait 3 turns.")
+                    self.locationName.setText("Open Lab")
                 elif player.jailRolls == -1:
                     self.spotText.setText("Congrats! You got out of Open Lab!")
+                    self.actionText.setText("Wait until next turn to move your piece... let the next player go.")
                     player.jailRolls = 0
                 else:
-                    self.spotText.setText("You landed on {}\n\n{}".format(property.name, property.description))
+                    self.locationName.setText("{}".format(property.name))
+                    self.spotText.setText("{}".format(property.description))
+                    self.actionText.setText("Nothing else to do here.... let the next player go.")
             
                     
                     
