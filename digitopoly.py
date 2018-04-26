@@ -22,7 +22,7 @@ from board import *
 # RGB
 COLOR_PRESETS_RGB = ["rgb(255,0,0)", "rgb(255,90,0)", "rgb(255,255,0)", "rgb(0,255,0)", "rgb(0,255,255)", "rgb(0,0,255)", "rgb(120,0,255)", "rgb(255,0,191)"]
 # GRB
-COLOR_PRESETS_GRB = set(["grb(0,255,0)", "grb(90,255,0)", "grb(255,255,0)", "grb(255,0,0)", "grb(255,0,255)", "grb(0,0,255)", "grb(0,120,255)", "grb(0,255,191)"])
+COLOR_PRESETS_GRB = set(["000 255 000", "090 255 000", "255 255 000", "255 000 000", "255 000 255", "000 000 255", "000 120 255", "000 255 191)"])
 # Player Pieces
 PLAYER_PIECES = ["images/pieces/1.png", "images/pieces/2.png", "images/pieces/3.png", "images/pieces/4.png", "images/pieces/5.png", "images/pieces/6.png", "images/pieces/7.png", "images/pieces/8.png"]
 # RGB Color Array
@@ -57,7 +57,7 @@ class DetailView(QMainWindow, Ui_detailView):
 		# Update UI
 		self.setupUi(self)
 		self.displayDetail()
-
+            
 		# Connect Buttons
 		reconnect(self.button_closeDetail.clicked, self.close)
 		if not (self.property.upgraded):
@@ -73,7 +73,7 @@ class DetailView(QMainWindow, Ui_detailView):
 
 	def updatePlayerUI(self):
 		player = self.player
-		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber))
+		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber + 1))
 		self.label_playerInfo_2.setText(player.dispStr()[0])
 		self.button_closeDetail.setEnabled(True)
 		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
@@ -82,6 +82,10 @@ class DetailView(QMainWindow, Ui_detailView):
                 
 	def displayDetail(self):
 		prop = self.property
+		effect = QGraphicsOpacityEffect(self.frame_background)
+		effect.setOpacity(.5)
+		self.frame_background.setStyleSheet("border-image: url('{}')".format(prop.spotImage))
+		self.frame_background.setGraphicsEffect(effect)
 		self.propIcon.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
 		self.label_propName.setText(str(prop.name))
 		#print prop.name
@@ -98,7 +102,7 @@ class DetailView(QMainWindow, Ui_detailView):
 		self.label_propUpText.setText("")
 		#print prop.upText
 		try:
-                    self.label_propOwner.setText("Current Owner: Player {}".format(prop.owner.playerNumber))
+                    self.label_propOwner.setText("Current Owner: Player {}".format(prop.owner.playerNumber + 1))
                 except:
                     self.button_upgrade.setEnabled(False)
                     self.label_propOwner.setText("Current Owner: No owner yet.")
@@ -132,13 +136,18 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 		self.rrButtons = [self.button_rr_1, self.button_rr_2, self.button_rr_3, self.button_rr_4]
 		
 		self.displayProps()
+		effect = QGraphicsOpacityEffect(self.frame_brickImage)
+		effect.setOpacity(.4)
+		self.frame_brickImage.setGraphicsEffect(effect)
+		self.frame_brickImage.setStyleSheet("border-image: url('brickWall.jpg') 0 0 0 0 stretch stretch;")
+		
 
 		# Connect Buttons
 		reconnect(self.button_closeProperties.clicked, self.close)
 
 	def updatePlayerUI(self):
 		player = self.player
-		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber))
+		self.label_currPlayerName_2.setText("Player {}:".format(player.playerNumber + 1))
 		self.label_playerInfo_2.setText(player.dispStr()[0])
 		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
 		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
@@ -150,10 +159,12 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 
 		for btn in self.propButtons:
 			btn.setEnabled(False)
+                        btn.setStyleSheet("background-color: rgb(0,0,0,0)")
 			btn.setText("")
 
 		for btn in self.rrButtons:
 			btn.setEnabled(False)
+			btn.setStyleSheet("background-color: rgb(0,0,0,0)")
 			btn.setText("")
 
 		btnCnt = 0
@@ -165,9 +176,14 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 			else:
 				btn = self.propButtons[btnCnt]
 				btnCnt = btnCnt + 1
-			btn.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(prop.image))
-			btn.setText(prop.name)
+                        btn.setText("")
+                        #effect = QGraphicsOpacityEffect(btn)
+                        #effect.setOpacity(.1)
+                        #self.btn.setGraphicsEffect(effect)
+                        btn.setAutoFillBackground(True)
+			btn.setStyleSheet("border-image: url('{}'); border-color: rgb(0,0,0,0)".format(prop.image))
                         btn.setEnabled(True)
+
                         reconnect(btn.clicked, (lambda property=prop: self.propDetailOpen(property, player)))
                 
 
@@ -175,7 +191,7 @@ class PropertyViewer(QMainWindow, Ui_propertyView):
 	def propDetailOpen(self, prop, player):
 		self.detail_window = DetailView(prop, player, self)
 		self.detail_window.showFullScreen()
-		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayem,rUI)
+		self.detail_window.button_closeDetail.clicked.connect(self.updatePlayerUI)
 
 class MainMenu(QMainWindow, Ui_mainMenu):
 	"""docstring for MainMenu"""
@@ -377,11 +393,11 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		
 	def updatePlayerUI(self):
 		player = self.players[self.currPlayerNum]
-		self.label_currPlayerName.setText("Player {}:".format(player.playerNumber))
+		self.label_currPlayerName.setText("Player {}:".format(player.playerNumber + 1))
 		self.label_playerInfo.setText(player.dispStr()[0])
 		self.button_playerColorInd.setStyleSheet("background-color:{};".format(player.color))
 		self.button_button_playerPieceInd.setStyleSheet("border-image: url('{}') 0 0 0 0 stretch stretch;".format(player.piece))
-
+                self.frame_border.setStyleSheet("border: 15px solid {}".format(player.color))
 
 		if len(player.properties) > 0:
 			self.button_showProperties.setEnabled(True)
@@ -412,8 +428,15 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_newGame.setVisible(False)
 		self.frame_currentPlayerInfo.setVisible(True)
 		self.frame_boardImage.setStyleSheet("")
+		self.frame_black.setStyleSheet("")
+                self.frame_gold.setStyleSheet("")
+		effect = QGraphicsOpacityEffect(self.frame_mainImage)
+		effect.setOpacity(.1)
+		self.frame_mainImage.setGraphicsEffect(effect)
+		self.frame_mainImage.setStyleSheet("border-image: url('boardBackgroundMainGame.png') 0 0 0 0 stretch stretch;")
                 self.frame_black.setStyleSheet("")
                 self.frame_gold.setStyleSheet("")
+                self.button_locationLogo.setVisible(True)
                 
 		self.board = Board()
 		self.players = []
@@ -444,10 +467,12 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 #self.UpdateOrientation()
 		
 		try:
-                    blinkingIndex = RGB_MODE.index(2)
-                    print("blinking: ", blinkingIndex)
-                    RGB_MODE[blinkingIndex] = 0
-                    RGB_COLOR[blinkingIndex] = "grb(0,0,0)"
+                    i = 0
+                    for mode in RGB_MODE:
+                        i += 1
+                        if mode == 2:
+                            RGB_MODE[i] = 0
+                            RGB_COLOR[i] = "grb(0,0,0)"
                 except:
                     pass
 		
@@ -469,14 +494,18 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     
 		# Update Player UI
 		player = self.players[self.currPlayerNum]
+		self.chanceCard.setStyleSheet("")
+                self.chanceCard.setText("")
 		currentPlace = self.board.properties[player.currPos]
 		if player.numProperties == 0:
+                    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                     self.locationName.setText("{}".format(currentPlace.name))
-                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber))
+                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber + 1))
                     self.actionText.setText("Roll the dice to take your turn!")
                 else:
+                    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                     self.locationName.setText("{}".format(currentPlace.name))
-                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber))
+                    self.spotText.setText("It's Player {}'s turn!".format(player.playerNumber + 1))
                     self.actionText.setText("You may roll the dice or browse through your properties to upgrade them.")
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
 		print("Color:", player.color)
@@ -552,6 +581,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 	def takeTurn(self):
 		player = self.players[self.currPlayerNum]
 		roll = player.roll()
+		currentPlace = self.board.properties[player.currPos]
 		if player.inJail == True:
                     		# Update Player UI after Move
                     self.frame_diceResult.setVisible(True)
@@ -567,7 +597,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     # Add In double counts self.doublCount = 0
                     player.move(roll[0] + roll[1])
                     player.currPlace = self.board.properties[player.currPos]
-                    print "Player {} moved to index {}.".format(player.playerNumber, player.currPos)
+                    print "Player {} moved to index {}.".format(player.playerNumber + 1, player.currPos)
 		
                     # Update Player UI after Move
                     self.frame_diceResult.setVisible(True)
@@ -585,8 +615,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
 
                 RGBindex = COLOR_PRESETS_RGB.index(player.color)
-                RGB_COLOR[player.currPos] = COLOR_PRESETS_RGB[RGBindex]
-                RGB_MODE[player.currPos] = 2
+		for LED in currentPlace.LEDs:
+                    RGB_COLOR[int(LED)] = COLOR_PRESETS_RGB[RGBindex]
+                    RGB_MODE[int(LED)] = 2
                 self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
@@ -627,6 +658,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 				self.button_playerAction.setEnabled(False)
 				self.button_nextPlayer.setEnabled(True)
 				reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
+			self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                         self.locationName.setText("{}".format(currentPlace.name))
                         self.spotText.setText("{}".format(currentPlace.description))
                         self.actionText.setText("Price to Buy: ${}.00\nClick the image for more information about buying this property!".format(currentPlace.price))
@@ -640,9 +672,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
 			self.button_nextPlayer.setEnabled(True)
 			print(currentPlace.rentText)
 			newRentText = str(currentPlace.rentText.format(currentPlace.rent))
+			self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
 			self.locationName.setText("{}".format(currentPlace.name))
 			self.spotText.setText("{}".format(currentPlace.description))
-			self.actionSpot.setText("{}".format(newRentText))
+			self.actionText.setText("{}".format(newRentText))
 
 			#self.spotText.setText("Player {} paid {} to Player {} for rent.".format(player.playerNumber, currentPlace.rent, currentPlace.owner.playerNumber))
 
@@ -650,6 +683,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
+		    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image)) 
 		    self.locationName.setText("{}".format(currentPlace.name))
 		    self.spotText.setText("{}".format(currentPlace.description))
                     self.actionText.setText("You already own this property!")
@@ -657,15 +691,16 @@ class MainGame(QMainWindow, Ui_MainWindow):
 
         
 	def buyProperty(self, player, currentPlace):
-		print "Player {} buying {}".format(str(player.playerNumber), str(currentPlace.name))
+		print "Player {} buying {}".format(str(player.playerNumber + 1), str(currentPlace.name))
 		currentPlace.owner = player
 		player.properties.append(currentPlace)
 		player.numProperties = player.numProperties + 1
 		player.charge(currentPlace.price)
 		RGBindex = COLOR_PRESETS_RGB.index(player.color)
 		print("index", RGBindex)
-		RGB_COLOR[currentPlace.position] = COLOR_PRESETS_RGB[RGBindex]
-		RGB_MODE[currentPlace.position] = 1
+		for LED in currentPlace.LEDs:
+                    RGB_COLOR[int(LED)] = COLOR_PRESETS_RGB[RGBindex]
+                    RGB_MODE[int(LED)] = 1
 
 		# Update UI
 		self.updatePlayerUI()
@@ -677,6 +712,8 @@ class MainGame(QMainWindow, Ui_MainWindow):
 	def chanceHandle(self, player):
 		i = random.randint(0,len(self.board.chanceCards)-1)
 		card = self.board.chanceCards[i]
+		prevlocation = player.currPos
+		currentPlace = self.board.properties[player.currPos]
 		#self.button_playerAction.setText(card.text)
 		#player.setLocation(self.board.properties[int(card.location)])
 		player.currPos = int(card.location)
@@ -687,19 +724,39 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		#reconnect(self.button_nextPlayer.clicked, self.getNextPlayer)
 		self.button_playerAction.setText("Advance")
 		self.locationName.setText("Chance!")
-		self.spotText.setStyleSheet("background-color: rgb(244, 163, 0)")
-		self.spotText.setText("{}".format(card.description))
+		self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
+		self.chanceCard.setStyleSheet("border-image: url('chanceCard.png'); font: italic 14pt Serif")
+		cardText = ""
+		textCount = len(card.description)
+		j = 0
+		while textCount >= 25:
+                    prevj = j
+                    j = 0
+                    while ((textCount-j > 0) and ((j < 25) or (card.description[len(card.description) - textCount + j] != " "))):
+                        print(j)
+                        print(card.description[len(card.description) - textCount + j])
+                        j += 1
+                    cardText = cardText + "\n       {}".format(card.description[len(card.description) - textCount:(len(card.description) - textCount+ j)])
+                    textCount -= j
+                cardText = cardText + "\n      {}".format(card.description[len(card.description) - textCount:])
+ 		self.chanceCard.setText("{}".format(cardText))
 		self.actionText.setText("{}".format(card.text))
+		self.spotText.setText("")
 		self.updatePlayerUI()
-		reconnect(self.button_playerAction.clicked, (lambda: self.takeAction(player)))
+		reconnect(self.button_playerAction.clicked, (lambda prevLoc=prevlocation: self.takeAction(player, prevLoc)))
 	
                 
-        def takeAction(self, player):
+        def takeAction(self, player, prevLoc):
+                self.chanceCard.setStyleSheet("")
+                self.chanceCard.setText("")
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
                 if player.currPlace.action == PROPERTY_SPACE:
                         print str(player.currPlace)
                         self.button_spotImage.setEnabled(True)
                         self.propertyHandle(player)
+                        #if player.currPos < prevLoc:
+                        #    player.money = player.money + 200
+                        #    print("Chance Card Sent Past Go\n")
                 elif player.currPlace.action == CHANCE_SPACE:
                         self.chanceHandle(player)
                         self.button_spotImage.setEnabled(False)
@@ -711,6 +768,9 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 elif player.currPlace.action == RAILROAD_SPACE:
                         self.button_spotImage.setEnabled(True)
                         self.railroadHandle(player)
+                        #if player.currPos < prevLoc:
+                        #    player.money = player.money + 200
+                        #    print("Chance Card Sent Past Go\n")
                 elif player.currPlace.action == NOOP_SPACE:
                         self.button_spotImage.setEnabled(False)
                         self.noopHandle(player)
@@ -719,13 +779,30 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		i = random.randint(0,len(self.board.communityChestCards)-1)
 		card = self.board.communityChestCards[i]
 		player.pay(int(card.amount))
+		currentPlace = self.board.properties[player.currPos]
 		# Update UI
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
+		cardText = ""
+		textCount = len(card.description)
+		j = 0
+		while textCount >= 25:
+                    prevj = j
+                    j = 0
+                    while ((textCount-j > 0) and ((j < 25) or (card.description[len(card.description) - textCount + j] != " "))):
+                        print(j)
+                        print(card.description[len(card.description) - textCount + j])
+                        j += 1
+                    cardText = cardText + "\n       {}".format(card.description[len(card.description) - textCount:(len(card.description) - textCount+ j)])
+                    textCount -= j
+                cardText = cardText + "\n      {}".format(card.description[len(card.description) - textCount:])
+                self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
 		self.locationName.setText("Community Chest!")
-		self.spotText.setText("Your card says:\n{}\n\n{}.".format(card.text, card.description))
-		self.actionText.setText("")
+		self.chanceCard.setStyleSheet("border-image: url('communityChest.png'); font: italic 14pt Serif")
+		self.chanceCard.setText("{}".format(cardText))
+		self.spotText.setText("")
+		self.actionText.setText("{}".format(card.text))
 		self.updatePlayerUI()
 
 	def bankHandle(self, player):
@@ -736,6 +813,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.button_playerAction.setEnabled(False)
 		self.button_nextPlayer.setText("Next Player")
 		self.button_nextPlayer.setEnabled(True)
+		self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(property.image))
 		self.locationName.setText("{}".format(property.name))
 		self.spotText.setText("{}".format(property.description))
 		self.actionText.setText("")
@@ -756,6 +834,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 						print "Player doesnt have enough money"
 						self.button_playerAction.setEnabled(False)
 						self.button_nextPlayer.setEnabled(True)
+				self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                                 self.locationName.setText("{}".format(currentPlace.name))
                                 self.spotText.setText("{}".format(currentPlace.description))
                                 self.actionText.setText("Price to Buy: $200.00\nClick the image for more information about buying this property!")
@@ -773,6 +852,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                         self.button_nextPlayer.setText("Next Player")
                         self.button_playerAction.setEnabled(False)
                         self.button_nextPlayer.setEnabled(True)
+                        self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                         self.locationName.setText("{}".format(currentPlace.name))
                         self.spotText.setText("{}".format(currentPlace.description))
                         self.actionText.setText("{}".format(newRentText))
@@ -780,6 +860,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     self.button_nextPlayer.setText("Next Player")
 		    self.button_playerAction.setEnabled(False)
 		    self.button_nextPlayer.setEnabled(True)
+		    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
 		    self.locationName.setText("{}".format(currentPlace.name))
 		    self.spotText.setText("{}".format(currentPlace.description))
                     self.actionText.setText("You already own this property!")
@@ -797,11 +878,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     self.spotText.setText("You are in Open Lab! \n\nTurns in Open Lab: {}".format(player.jailRolls))
                     self.actionText.setText("To get out of jail you must roll doubles or wait 3 turns.")
                     self.locationName.setText("Open Lab")
+                    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                 elif player.jailRolls == -1:
                     self.spotText.setText("Congrats! You got out of Open Lab!")
                     self.actionText.setText("Wait until next turn to move your piece... let the next player go.")
                     player.jailRolls = 0
                 else:
+                    self.button_locationLogo.setStyleSheet("border-image: url('{}')".format(currentPlace.image))
                     self.locationName.setText("{}".format(property.name))
                     self.spotText.setText("{}".format(property.description))
                     self.actionText.setText("Nothing else to do here.... let the next player go.")
