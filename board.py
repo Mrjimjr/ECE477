@@ -26,7 +26,7 @@ class Property():
 		self.description = description
 		self.rentText = rentText
 		self.upText = upText
-		self.LEDs = []
+		# self.LEDs = []
 		self.LEDs = LEDs
 		self.image = "images/tiles/{}.png".format(self.position + 1)
 		self.spotImage = "images/spotImages/{}.png".format(self.position + 1)

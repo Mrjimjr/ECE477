@@ -9,6 +9,7 @@ import os
 import time
 import random
 import serial
+import re
 
 from ui_window import Ui_MainWindow
 from ui_propertyView import Ui_propertyView
@@ -361,6 +362,10 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     RGB_COLOR.append("255 255 255")
                     RGB_MODE.append(0)
                 print(len(RGB_COLOR))
+                
+                with open("LEDs", "w") as f:
+                    f.write(str(RGB_COLOR) + "\n")
+                    f.write(str(RGB_MODE))
                             
                 self.roation = 0
 
@@ -462,20 +467,23 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.currPlayerNum = self.currPlayerNum + 1
 		if self.currPlayerNum == len(self.players):
 			self.currPlayerNum = 0
-		
-			
 
-                #self.UpdateOrientation()
-		
-		try:
-                    i = 0
-                    for mode in RGB_MODE:
-                        i += 1
-                        if mode == 2:
-                            RGB_MODE[i] = 0
-                            RGB_COLOR[i] = "255 255 255"
-                except:
+                try:
+                    for prop in self.board.properties:
+                        for led in prop.LEDs:
+                            RGB_MODE[int(led)] = 0
+                            if isinstance(prop.owner, Player):
+                                RGB_COLOR[int(led)] = COLOR_PRESETS_GRB[COLOR_PRESETS_RGB.index(prop.owner.color)]
+                            else:
+                                RGB_COLOR[int(led)] = "255 255 255"
+                except Exception as e:
+                    print e
                     pass
+		
+                with open("LEDs", "w") as f:
+                    f.write(str(RGB_COLOR) + "\n")
+                    f.write(str(RGB_MODE))
+                    
 		
 		print(RGB_COLOR)
 		print(RGB_MODE)
@@ -616,9 +624,15 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     #self.spotText.setText(self.spotText.text + "\n\n {}".format(self.board.properties[player.currPos].text))
 
                 RGBindex = COLOR_PRESETS_RGB.index(player.color)
-		for LED in currentPlace.LEDs:
-                    RGB_COLOR[int(LED)] = COLOR_PRESETS_RGB[RGBindex]
+		for LED in player.currPlace.LEDs:
+                    RGB_COLOR[int(LED)] = COLOR_PRESETS_GRB[RGBindex]
                     RGB_MODE[int(LED)] = 2
+                    
+                with open("LEDs", "w") as f:
+                    f.write(str(RGB_COLOR) + "\n")
+                    f.write(str(RGB_MODE))
+                    
+                
                 self.updatePlayerUI()
 		
 		if player.currPlace.action == PROPERTY_SPACE:
@@ -700,9 +714,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		RGBindex = COLOR_PRESETS_RGB.index(player.color)
 		print("index", RGBindex)
 		for LED in currentPlace.LEDs:
-                    RGB_COLOR[int(LED)] = COLOR_PRESETS_RGB[RGBindex]
+                    RGB_COLOR[int(LED)] = COLOR_PRESETS_GRB[RGBindex]
                     RGB_MODE[int(LED)] = 1
 
+                with open("LEDs", "w") as f:
+                    f.write(str(RGB_COLOR) + "\n")
+                    f.write(str(RGB_MODE))
+                    
 		# Update UI
 		self.updatePlayerUI()
 		self.button_playerAction.setEnabled(False)
@@ -751,6 +769,21 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 self.chanceCard.setStyleSheet("")
                 self.chanceCard.setText("")
                 self.button_spotImage.setStyleSheet("border-image: url('images/spotImages/{}.png') 0 0 0 0 stretch stretch;".format(player.currPos + 1))
+                
+                prevLoc = self.board.properties[prevLoc]
+		for LED in prevLoc.LEDs:
+                    RGB_COLOR[int(LED)] = "255 255 255"
+                    RGB_MODE[int(LED)] = 1           
+                
+                RGBindex = COLOR_PRESETS_RGB.index(player.color)
+		for LED in player.currPlace.LEDs:
+                    RGB_COLOR[int(LED)] = COLOR_PRESETS_GRB[RGBindex]
+                    RGB_MODE[int(LED)] = 2
+                    
+                with open("LEDs", "w") as f:
+                    f.write(str(RGB_COLOR) + "\n")
+                    f.write(str(RGB_MODE))
+                
                 if player.currPlace.action == PROPERTY_SPACE:
                         print str(player.currPlace)
                         self.button_spotImage.setEnabled(True)
@@ -936,15 +969,20 @@ def updateLED():
 	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
 
 	while True:
+                with open("LEDs", "r") as f:
+                    RGB_COLOR = re.findall(r'\'([^\']*)\'', f.readline())
+                    RGB_MODE = re.findall(r'\d', f.readline())
+                    
+                
 		for x in range(0,49):
 			string = "S {:02d} {} x".format(x, RGB_COLOR[x])
-			# print "writing " + string
+			#print "writing " + string
 			port.write(string)
 			time.sleep(0.01)
 		
 		# Blink LEDs
 		for x in range(0,49):
-			if RGB_MODE[x] == 2:
+			if RGB_MODE[x] == '2':
 				string = "S {:02d} 000 000 000 x".format(x)
 				# print "writing " + string
 				port.write(string)
