@@ -2,29 +2,36 @@ import serial
 import time
 import os
 import re
-from multiprocessing import Process
+import random
+from multiprocessing import Process, Array
 
-port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
+# port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
 
 # LED Signal
 # M ## GGG RRR BBB x
 # 0 2  5   9   13  17
+
+
+
 def LED():
+	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
+
+	global RGB_MODE
+	global RGB_COLOR
+
 	while True:
 		for x in xrange(0,50):
-			string = "S {:02d} 255 000 000 x".format(x)
+			string = "S {:02d} {} x".format(x, RGB_COLOR[x])
 			# print "writing " + string
 			port.write(string)
 			time.sleep(0.01)
+		
+		# Blink LEDs
 		for x in xrange(0,50):
-			string = "S {:02d} 000 000 255 x".format(x)
-			# print "writing " + string
-			port.write(string)
-			time.sleep(0.01)
-		for x in xrange(0,50):
-			string = "S {:02d} 000 255 000 x".format(x)
-			# print "writing " + string
-			port.write(string)
+			if RGB_MODE[x] == 2:
+				string = "S {:02d} 000 000 000 x".format(x)
+				# print "writing " + string
+				port.write(string)
 			time.sleep(0.01)
 
 	# time.sleep(1)

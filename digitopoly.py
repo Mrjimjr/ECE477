@@ -22,7 +22,7 @@ from board import *
 # RGB
 COLOR_PRESETS_RGB = ["rgb(255,0,0)", "rgb(255,90,0)", "rgb(255,255,0)", "rgb(0,255,0)", "rgb(0,255,255)", "rgb(0,0,255)", "rgb(120,0,255)", "rgb(255,0,191)"]
 # GRB
-COLOR_PRESETS_GRB = set(["000 255 000", "090 255 000", "255 255 000", "255 000 000", "255 000 255", "000 000 255", "000 120 255", "000 255 191)"])
+COLOR_PRESETS_GRB = ["000 255 000", "090 255 000", "255 255 000", "255 000 000", "255 000 255", "000 000 255", "000 120 255", "000 255 191)"]
 # Player Pieces
 PLAYER_PIECES = ["images/pieces/1.png", "images/pieces/2.png", "images/pieces/3.png", "images/pieces/4.png", "images/pieces/5.png", "images/pieces/6.png", "images/pieces/7.png", "images/pieces/8.png"]
 # RGB Color Array
@@ -357,12 +357,13 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.currPlayerNum = -1
 		self.board = None
 		
-		for i in range(49):
-                    RGB_COLOR.append("grb(0,0,0)")
+		for i in range(0, 50):
+                    RGB_COLOR.append("255 255 255")
                     RGB_MODE.append(0)
                 print(len(RGB_COLOR))
                             
                 self.roation = 0
+
 
 		# Property UI
 		self.property_window = None
@@ -472,7 +473,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                         i += 1
                         if mode == 2:
                             RGB_MODE[i] = 0
-                            RGB_COLOR[i] = "grb(0,0,0)"
+                            RGB_COLOR[i] = "255 255 255"
                 except:
                     pass
 		
@@ -919,7 +920,8 @@ def reconnect(signal, newhandler=None, oldhandler=None):
 	if newhandler is not None:
 		signal.connect(newhandler)
 
-def updateLED(led, mode, red = "", green = "", blue = ""):
+def updateLED():
+# def updateLED(led, mode, red = "", green = "", blue = ""):
 	""" params: values should be strings
 			led: Give the Space Number to light
 			mode: (S/B/R)
@@ -931,12 +933,25 @@ def updateLED(led, mode, red = "", green = "", blue = ""):
 			blue: Blue Value 0-255 of the LED for <S> and <B>
 	"""
 	# Build String
-	string = "{}".format(led, mode, green, red, blue)
-	try:
-		with open("LEDs", 'w') as f:
-			f.write(value)	
-	except Exception as e:
-		print e
+	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
+
+	while True:
+		for x in range(0,49):
+			string = "S {:02d} {} x".format(x, RGB_COLOR[x])
+			# print "writing " + string
+			port.write(string)
+			time.sleep(0.01)
+		
+		# Blink LEDs
+		for x in range(0,49):
+			if RGB_MODE[x] == 2:
+				string = "S {:02d} 000 000 000 x".format(x)
+				# print "writing " + string
+				port.write(string)
+			time.sleep(0.01)
+
+	# time.sleep(1)
+	# port.write("\r\nYou sent:" + repr(rcv))
 
 def mouse():
 	print "Starting Mouse Emulation pid={}".format(os.getppid())
@@ -963,7 +978,7 @@ def mouse():
 if __name__ == '__main__':
 	print "Starting Game pid={}".format(os.getpid())
 	# Start Mouse Emulation 
-	p = Process(target=mouse)
+	p = Process(target=updateLED)
 	p.start()
 
 	currentApp = QApplication(sys.argv)
