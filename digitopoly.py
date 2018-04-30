@@ -23,7 +23,7 @@ from board import *
 # RGB
 COLOR_PRESETS_RGB = ["rgb(255,0,0)", "rgb(255,90,0)", "rgb(255,255,0)", "rgb(0,255,0)", "rgb(0,255,255)", "rgb(0,0,255)", "rgb(120,0,255)", "rgb(255,0,191)"]
 # GRB
-COLOR_PRESETS_GRB = ["000 255 000", "090 255 000", "255 255 000", "255 000 000", "255 000 255", "000 000 255", "000 120 255", "000 255 191)"]
+COLOR_PRESETS_GRB = ["000 255 000", "165 255 000", "255 255 000", "255 000 000", "255 000 255", "000 000 255", "000 190 255", "000 255 191"]
 # Player Pieces
 PLAYER_PIECES = ["images/pieces/1.png", "images/pieces/2.png", "images/pieces/3.png", "images/pieces/4.png", "images/pieces/5.png", "images/pieces/6.png", "images/pieces/7.png", "images/pieces/8.png"]
 # RGB Color Array
@@ -359,7 +359,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
 		self.board = None
 		
 		for i in range(0, 50):
-                    RGB_COLOR.append("255 255 255")
+                    RGB_COLOR.append("000 000 000")
                     RGB_MODE.append(0)
                 print(len(RGB_COLOR))
                 
@@ -475,7 +475,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                             if isinstance(prop.owner, Player):
                                 RGB_COLOR[int(led)] = COLOR_PRESETS_GRB[COLOR_PRESETS_RGB.index(prop.owner.color)]
                             else:
-                                RGB_COLOR[int(led)] = "255 255 255"
+                                RGB_COLOR[int(led)] = "000 000 000"
                 except Exception as e:
                     print e
                     pass
@@ -772,7 +772,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                 
                 prevLoc = self.board.properties[prevLoc]
 		for LED in prevLoc.LEDs:
-                    RGB_COLOR[int(LED)] = "255 255 255"
+                    RGB_COLOR[int(LED)] = "000 000 000"
                     RGB_MODE[int(LED)] = 1           
                 
                 RGBindex = COLOR_PRESETS_RGB.index(player.color)
@@ -926,7 +926,7 @@ class MainGame(QMainWindow, Ui_MainWindow):
                     
                     
         def jailHandle(self, player, roll):
-                if player.jailRolls < 3:
+                if player.jailRolls < 2:
                     player.jailRolls += 1
                 else:
                     player.inJail = False
@@ -987,30 +987,23 @@ def updateLED():
 				# print "writing " + string
 				port.write(string)
 			time.sleep(0.01)
-
-	# time.sleep(1)
-	# port.write("\r\nYou sent:" + repr(rcv))
-
-def mouse():
-	print "Starting Mouse Emulation pid={}".format(os.getppid())
-	'''
-	port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=3.0)
-
-	while True:
-		# Move mouse to x y location
-		os.system("xdotool mousemove {} {}".format(100, 300))
-		# Left Click
-		os.system("xdotool click 1")
-
+		
+		rcv = port.readline().rstrip()
+		#print rcv
 		try:
-			with open("LEDs", 'r') as f:
-				led_data = f.read()	
-				port.write(led_data)
-		except Exception as e:
-			print e
-			
-		time.sleep(10)
-	'''
+			xLoc = re.search(r'X([^X]*)', rcv).group(1)
+			xLocInt = round(int(xLoc)) / 4
+			cmd = "xdotool mousemove {} {}".format(xLocInt, 300)
+			#print rcv
+			#print cmd
+			# print cmd
+			# Move mouse to x y location
+			os.system(cmd)
+			# Left Click
+			# os.system("xdotool click 1")
+		except:
+                        pass
+
 
 
 if __name__ == '__main__':

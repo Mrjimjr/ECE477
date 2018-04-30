@@ -33,7 +33,19 @@ def LED():
 				# print "writing " + string
 				port.write(string)
 			time.sleep(0.01)
-
+		rcv = port.readline().rstrip()
+		# print rcv
+		try:
+			xLoc = re.search(r'X([^X]*)', rcv).group(1)
+			xLocInt = round(int(xLoc)) / 2
+			cmd = "xdotool mousemove {} {}".format(xLocInt, 300)
+			# print cmd
+			# Move mouse to x y location
+			# os.system(cmd)
+			# Left Click
+			# os.system("xdotool click 1")
+		except:
+			pass
 	# time.sleep(1)
 	# port.write("\r\nYou sent:" + repr(rcv))
 

@@ -9,7 +9,7 @@ class Player():
 		self.currPlace = currPlace
 		self.color = color
 		self.piece = piece
-		self.money = 500
+		self.money = 1500
 		self.properties = []
 		self.numProperties = 0
 		self.jailRolls = 0

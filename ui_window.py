@@ -130,7 +130,7 @@ class Ui_MainWindow(object):
         self.button_spotImage.setGeometry(QtCore.QRect(120, 225, 430, 380))
         self.button_spotImage.setObjectName("button_spotImage")
         self.spotText = QtGui.QLabel(self.frame_currentPlayerInfo)
-        self.spotText.setGeometry(QtCore.QRect(630, 80, 545, 350))
+        self.spotText.setGeometry(QtCore.QRect(630, 74, 545, 365))
         self.spotText.setText("")
         self.spotText.setObjectName("spotText")
         self.spotText.setWordWrap(True)

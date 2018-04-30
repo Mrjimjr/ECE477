@@ -44,7 +44,7 @@ class Ui_detailView(object):
         self.button_closeDetail.setObjectName("button_closeDetail")
         self.button_upgrade = QtGui.QPushButton(self.frame)
         self.button_upgrade.setEnabled(True)
-        self.button_upgrade.setGeometry(QtCore.QRect(480, 250, 90, 70))
+        self.button_upgrade.setGeometry(QtCore.QRect(410, 365, 90, 70))
         self.button_upgrade.setAutoFillBackground(False)
         self.button_upgrade.setObjectName("button_upgrade")
         self.widget = QtGui.QWidget(self.frame)
